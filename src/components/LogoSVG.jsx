@@ -1,6 +1,6 @@
 import React from 'react';
 
-// Logo SVG simple para Nómada
+// Logo SVG simple para Nómada con colores pastel
 const LogoSVG = ({ width = 40, height = 40 }) => {
     return (
         <svg
@@ -49,8 +49,8 @@ const LogoSVG = ({ width = 40, height = 40 }) => {
                     y2="200"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop offset="0" stopColor="#23D997" />
-                    <stop offset="1" stopColor="#F05454" />
+                    <stop offset="0" stopColor="#7FB3D5" />
+                    <stop offset="1" stopColor="#F7CAC9" />
                 </linearGradient>
             </defs>
         </svg>

@@ -4,179 +4,183 @@ import { motion, useInView } from 'framer-motion';
 
 // Datos de pasos
 const stepsData = [
-    {
-        id: 1,
-        number: '01',
-        title: 'Regístrate',
-        description: 'Crea tu cuenta de Nómada para acceder a todas las funcionalidades de la plataforma.',
-    },
-    {
-        id: 2,
-        number: '02',
-        title: 'Explora',
-        description: 'Descubre rutas, destinos y experiencias compartidas por otros viajeros y aventureros.',
-    },
-    {
-        id: 3,
-        number: '03',
-        title: 'Planifica',
-        description: 'Crea tu propia ruta personalizada o sigue una de las recomendadas por la comunidad.',
-    },
-    {
-        id: 4,
-        number: '04',
-        title: 'Comparte',
-        description: 'Comparte tus experiencias, fotos y consejos con la comunidad para inspirar a otros viajeros.',
-    },
+  {
+    id: 1,
+    number: '01',
+    title: 'Regístrate',
+    description: 'Crea tu cuenta de Nómada para acceder a todas las funcionalidades de la plataforma.',
+  },
+  {
+    id: 2,
+    number: '02',
+    title: 'Explora',
+    description: 'Descubre rutas, destinos y experiencias compartidas por otros viajeros y aventureros.',
+  },
+  {
+    id: 3,
+    number: '03',
+    title: 'Planifica',
+    description: 'Crea tu propia ruta personalizada o sigue una de las recomendadas por la comunidad.',
+  },
+  {
+    id: 4,
+    number: '04',
+    title: 'Comparte',
+    description: 'Comparte tus experiencias, fotos y consejos con la comunidad para inspirar a otros viajeros.',
+  },
 ];
 
 const HowItWorks = () => {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: false, amount: 0.2 });
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: false, amount: 0.2 });
 
-    // Variantes para animaciones
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.2,
-                delayChildren: 0.3,
-            }
-        }
-    };
+  // Variantes para animaciones
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3,
+      }
+    }
+  };
 
-    const itemVariants = {
-        hidden: { x: -50, opacity: 0 },
-        visible: {
-            x: 0,
-            opacity: 1,
-            transition: {
-                type: "spring",
-                stiffness: 100,
-                damping: 12
-            }
-        }
-    };
+  const itemVariants = {
+    hidden: { x: -50, opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 12
+      }
+    }
+  };
 
-    const lineVariants = {
-        hidden: { scaleY: 0, originY: 0 },
-        visible: {
-            scaleY: 1,
-            transition: {
-                duration: 0.8,
-                ease: "easeInOut"
-            }
-        }
-    };
+  const lineVariants = {
+    hidden: { scaleY: 0, originY: 0 },
+    visible: {
+      scaleY: 1,
+      transition: {
+        duration: 0.8,
+        ease: "easeInOut"
+      }
+    }
+  };
 
-    const titleVariants = {
-        hidden: { opacity: 0, y: -50 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                duration: 0.8,
-                ease: "easeOut"
-            }
-        }
-    };
+  const titleVariants = {
+    hidden: { opacity: 0, y: -50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  };
 
-    return (
-        <HowItWorksSection id="how-it-works" ref={ref}>
-            <ContentContainer>
-                <TextContainer
-                    as={motion.div}
-                    variants={titleVariants}
-                    initial="hidden"
-                    animate={isInView ? "visible" : "hidden"}
-                >
-                    <SectionTag>Cómo funciona</SectionTag>
-                    <SectionTitle>Comienza tu <TitleGradient>aventura</TitleGradient></SectionTitle>
-                    <SectionDescription>
-                        Descubre cómo Nómada transforma la forma de viajar y conectar con otros aventureros
-                        en 4 sencillos pasos.
-                    </SectionDescription>
-                </TextContainer>
+  return (
+    <HowItWorksSection id="how-it-works" ref={ref}>
+      <ContentContainer>
+        <TextContainer
+          as={motion.div}
+          variants={titleVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
+          <SectionTag>Cómo funciona</SectionTag>
+          <SectionTitle>Comienza tu <TitleGradient>aventura</TitleGradient></SectionTitle>
+          <SectionDescription>
+            Descubre cómo Nómada transforma la forma de viajar y conectar con otros aventureros
+            en 4 sencillos pasos.
+          </SectionDescription>
+        </TextContainer>
 
-                <StepsContainer
-                    as={motion.div}
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate={isInView ? "visible" : "hidden"}
-                >
-                    {stepsData.map((step, index) => (
-                        <StepItem
-                            key={step.id}
-                            as={motion.div}
-                            variants={itemVariants}
-                            whileHover={{
-                                scale: 1.03,
-                                transition: { duration: 0.3 }
-                            }}
-                        >
-                            <StepNumber>{step.number}</StepNumber>
-                            <StepContent>
-                                <StepTitle>{step.title}</StepTitle>
-                                <StepDescription>{step.description}</StepDescription>
-                            </StepContent>
+        <StepsContainer
+          as={motion.div}
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
+          {stepsData.map((step, index) => (
+            <StepItem
+              key={step.id}
+              as={motion.div}
+              variants={itemVariants}
+              whileHover={{
+                scale: 1.03,
+                transition: { duration: 0.3 }
+              }}
+            >
+              <StepNumber>{step.number}</StepNumber>
+              <StepContent>
+                <StepTitle>{step.title}</StepTitle>
+                <StepDescription>{step.description}</StepDescription>
+              </StepContent>
 
-                            {index < stepsData.length - 1 && (
-                                <StepConnector
-                                    as={motion.div}
-                                    variants={lineVariants}
-                                />
-                            )}
-                        </StepItem>
-                    ))}
-                </StepsContainer>
+              {index < stepsData.length - 1 && (
+                <StepConnector
+                  as={motion.div}
+                  variants={lineVariants}
+                />
+              )}
+            </StepItem>
+          ))}
+        </StepsContainer>
 
-                <CallToAction
-                    as={motion.div}
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-                    transition={{ delay: 0.8, duration: 0.5 }}
-                >
-                    <CTAText>¿Listo para comenzar tu viaje?</CTAText>
-                    <CTAButton>Únete ahora</CTAButton>
-                </CallToAction>
-            </ContentContainer>
+        <CallToAction
+          as={motion.div}
+          initial={{ opacity: 0, y: 50 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          transition={{ delay: 0.8, duration: 0.5 }}
+        >
+          <CTAText>¿Listo para comenzar tu viaje?</CTAText>
+          <CTAButton>Únete ahora</CTAButton>
+        </CallToAction>
+      </ContentContainer>
 
-            {/* Elementos decorativos */}
-            <BackgroundDecoration
-                as={motion.div}
-                initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 0.5 } : { opacity: 0 }}
-                transition={{ duration: 1 }}
-            />
-        </HowItWorksSection>
-    );
+      {/* Elementos decorativos */}
+      <BackgroundDecoration
+        as={motion.div}
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 0.5 } : { opacity: 0 }}
+        transition={{ duration: 1 }}
+      />
+    </HowItWorksSection>
+  );
 };
 
 // Estilos
 const HowItWorksSection = styled.section`
   position: relative;
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 8rem 0;
+  padding: 6rem 0;
+  width: 100vw;
   overflow: hidden;
+  background-color: var(--background);
+  box-sizing: border-box;
+  
+  @media (max-width: 768px) {
+    padding: 4rem 0;
+  }
 `;
 
 const ContentContainer = styled.div`
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0;
   position: relative;
   z-index: 1;
+  box-sizing: border-box;
 `;
 
 const TextContainer = styled.div`
-  max-width: 700px;
-  margin: 0 auto 5rem;
   text-align: center;
+  margin-bottom: 4rem;
+  width: 100%;
+  padding: 0 1rem;
+  box-sizing: border-box;
 `;
 
 const SectionTag = styled.span`
@@ -211,9 +215,12 @@ const SectionDescription = styled.p`
 const StepsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  max-width: 800px;
-  margin: 0 auto;
+  gap: 3rem;
+  width: 100%;
+  
+  @media (max-width: 768px) {
+    gap: 2rem;
+  }
 `;
 
 const StepItem = styled.div`

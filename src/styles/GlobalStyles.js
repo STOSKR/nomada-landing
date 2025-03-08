@@ -4,88 +4,96 @@ import { createGlobalStyle } from 'styled-components';
 const GlobalStyles = createGlobalStyle`
   /* Variables de colores y tipografía */
   :root {
-    /* Colores principales */
-    --background: #080808;
-    --primary: #23D997;
-    --secondary: #F05454;
-    --tertiary: #30475E;
-    --text: #F8F8F8;
-    --text-secondary: #B1B1B1;
+    /* Colores pastel con fondo más suave */
+    --background: #F8F9FA;
+    --background-secondary: #EDF2F7;
+    --primary: #7FB3D5;
+    --secondary: #F7CAC9;
+    --tertiary: #B3E0F2;
+    --accent: #D7BDE2;
+    --text: #444444;
+    --text-light: #777777;
+    --shadow: rgba(0, 0, 0, 0.05);
     
     /* Fuentes */
-    --font-primary: 'Sora', sans-serif;
+    --font-primary: 'Poppins', sans-serif;
     --font-secondary: 'Montserrat', sans-serif;
   }
 
-  *,
-  *::before,
-  *::after {
+  * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
 
+  html, body {
+    width: 100vw;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
   html {
     scroll-behavior: smooth;
-    scroll-snap-type: y mandatory;
+    font-size: 16px;
   }
 
   body {
     margin: 0;
     padding: 0;
+    width: 100vw;
+    min-height: 100vh;
     font-family: var(--font-primary);
     background-color: var(--background);
+    background-image: 
+      radial-gradient(circle at 10% 20%, rgba(123, 179, 213, 0.05) 0%, transparent 20%),
+      radial-gradient(circle at 90% 50%, rgba(247, 202, 201, 0.07) 0%, transparent 25%),
+      radial-gradient(circle at 50% 80%, rgba(179, 224, 242, 0.05) 0%, transparent 20%);
+    background-attachment: fixed;
     color: var(--text);
     overflow-x: hidden;
     transition: all 0.3s ease;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    margin: 0;
-    padding: 0;
     font-family: var(--font-primary);
-    letter-spacing: -1px;
-  }
-
-  h1 {
-    font-size: clamp(2.5rem, 5vw, 5rem);
-    line-height: 1.1;
-  }
-
-  h2 {
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    line-height: 1.2;
+    color: var(--text);
+    line-height: 1.25;
+    margin-bottom: 1rem;
+    font-weight: 700;
   }
 
   p {
-    font-family: var(--font-secondary);
-    font-size: clamp(1rem, 1.5vw, 1.25rem);
     line-height: 1.6;
+    margin-bottom: 1rem;
   }
 
   a {
+    color: var(--primary);
     text-decoration: none;
-    color: inherit;
-    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      color: var(--secondary);
+    }
   }
 
-  button {
-    cursor: pointer;
-    border: none;
-    outline: none;
-    background: none;
+  button, .button {
     font-family: var(--font-primary);
-  }
-
-  /* Estilos para animaciones suaves */
-  .fade-in {
-    opacity: 0;
-    animation: fadeIn 0.8s forwards;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    border: none;
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px var(--shadow);
+    
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px var(--shadow);
+    }
   }
 
   /* Estilos para scroll */
@@ -108,27 +116,62 @@ const GlobalStyles = createGlobalStyle`
 
   /* Clases de utilidad */
   .container {
-    width: 90%;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 1rem;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .content-wrapper {
+    width: 100%;
+    margin: 0;
+    padding: 0 0rem;
+    box-sizing: border-box;
   }
 
   .section {
-    min-height: 100vh;
+    padding: 6rem 0;
     width: 100%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    scroll-snap-align: start;
-    padding: 5rem 0;
+    overflow: hidden;
+    box-sizing: border-box;
   }
 
-  .text-gradient {
-    background: linear-gradient(to right, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  .flex {
+    display: flex;
+  }
+
+  .grid {
+    display: grid;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  /* Media queries globales */
+  @media (max-width: 1200px) {
+    html {
+      font-size: 15px;
+    }
+  }
+  
+  @media (max-width: 992px) {
+    html {
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    html {
+      font-size: 13px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    html {
+      font-size: 12px;
+    }
   }
 `;
 

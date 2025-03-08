@@ -35,7 +35,7 @@ const Footer = () => {
               <FooterLinks>
                 <FooterLink href="#features">Características</FooterLink>
                 <FooterLink href="#how-it-works">Cómo funciona</FooterLink>
-                <FooterLink href="#community">Comunidad</FooterLink>
+                <FooterLink href="#team">Equipo</FooterLink>
                 <FooterLink href="#join">Únete</FooterLink>
               </FooterLinks>
             </FooterLinksColumn>
@@ -129,16 +129,21 @@ const Footer = () => {
           </SocialLinks>
         </FooterBottom>
       </FooterContent>
+
+      <FooterBackground />
     </FooterContainer>
   );
 };
 
 // Estilos
 const FooterContainer = styled.footer`
-  background: rgba(8, 8, 8, 0.95);
+  background: var(--background-secondary);
   padding: 5rem 0 2rem;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.03);
+  width: 100vw;
+  box-sizing: border-box;
   
   &::before {
     content: '';
@@ -157,10 +162,30 @@ const FooterContainer = styled.footer`
   }
 `;
 
+const FooterBackground = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.4;
+  background-image: 
+    radial-gradient(circle at 10% 90%, rgba(123, 179, 213, 0.1) 0%, transparent 20%),
+    radial-gradient(circle at 90% 10%, rgba(247, 202, 201, 0.1) 0%, transparent 25%);
+`;
+
 const FooterContent = styled.div`
-  width: 90%;
-  max-width: 1400px;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0 1rem;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  
+  @media (max-width: 768px) {
+    width: 95%;
+    padding: 0 1.5rem;
+  }
 `;
 
 const FooterTop = styled.div`
@@ -196,7 +221,7 @@ const LogoText = styled.span`
 `;
 
 const LogoTagline = styled.p`
-  color: var(--text-secondary);
+  color: var(--text-light);
   font-size: 1rem;
 `;
 
@@ -207,6 +232,7 @@ const FooterLinksContainer = styled.div`
   @media (max-width: 768px) {
     gap: 2rem;
     flex-wrap: wrap;
+    justify-content: space-between;
   }
   
   @media (max-width: 480px) {
@@ -224,6 +250,17 @@ const FooterLinksTitle = styled.h4`
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--text);
+  position: relative;
+  
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 30px;
+    height: 2px;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+  }
 `;
 
 const FooterLinks = styled.div`
@@ -234,7 +271,7 @@ const FooterLinks = styled.div`
 
 const FooterLink = styled.a`
   font-size: 0.95rem;
-  color: var(--text-secondary);
+  color: var(--text-light);
   transition: all 0.3s ease;
   
   &:hover {
@@ -246,7 +283,7 @@ const FooterLink = styled.a`
 const FooterDivider = styled.div`
   width: 100%;
   height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.05);
   margin: 3rem 0;
 `;
 
@@ -258,12 +295,13 @@ const FooterBottom = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 1.5rem;
+    align-items: flex-start;
   }
 `;
 
 const Copyright = styled.p`
   font-size: 0.9rem;
-  color: var(--text-secondary);
+  color: var(--text-light);
 `;
 
 const SocialLinks = styled.div`
@@ -278,16 +316,20 @@ const SocialLink = styled.a`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(123, 179, 213, 0.1);
   transition: all 0.3s ease;
   
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(to right, var(--primary), var(--secondary));
   }
 `;
 
 const SocialIcon = styled.div`
   color: var(--text);
+  
+  ${SocialLink}:hover & {
+    color: white;
+  }
 `;
 
 export default Footer; 

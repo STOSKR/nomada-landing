@@ -57,7 +57,7 @@ const Navbar = () => {
     { title: 'Inicio', href: '#home' },
     { title: 'Características', href: '#features' },
     { title: 'Cómo funciona', href: '#how-it-works' },
-    { title: 'Comunidad', href: '#community' },
+    { title: 'Equipo', href: '#team' },
     { title: 'Únete', href: '#join' },
   ];
 
@@ -87,7 +87,7 @@ const Navbar = () => {
         </NavItems>
 
         <ButtonContainer>
-          <JoinButton>
+          <JoinButton onClick={() => document.querySelector('#join').scrollIntoView({ behavior: 'smooth' })}>
             Únete
           </JoinButton>
 
@@ -112,16 +112,33 @@ const Navbar = () => {
           <MobileNavItem key={index}>
             <MobileNavLink
               href={link.href}
-              onClick={() => setMenuOpen(false)}
+              onClick={() => {
+                setMenuOpen(false);
+                document.querySelector(link.href).scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               {link.title}
             </MobileNavLink>
           </MobileNavItem>
         ))}
-        <MobileJoinButton>
+        <MobileJoinButton onClick={() => {
+          setMenuOpen(false);
+          document.querySelector('#join').scrollIntoView({ behavior: 'smooth' });
+        }}>
           Únete
         </MobileJoinButton>
       </MobileMenu>
+
+      {/* Overlay para cerrar el menú al hacer clic fuera */}
+      {menuOpen && (
+        <Overlay
+          onClick={() => setMenuOpen(false)}
+          as={motion.div}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        />
+      )}
     </NavContainer>
   );
 };
@@ -131,21 +148,24 @@ const NavContainer = styled.nav`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   padding: ${props => props.scroll ? '0.8rem 0' : '1.5rem 0'};
-  background: ${props => props.scroll ? 'rgba(8, 8, 8, 0.95)' : 'transparent'};
+  background: ${props => props.scroll ? 'rgba(248, 249, 250, 0.95)' : 'transparent'};
   backdrop-filter: ${props => props.scroll ? 'blur(10px)' : 'none'};
   transition: all 0.3s ease;
   z-index: 1000;
+  box-shadow: ${props => props.scroll ? '0 2px 10px rgba(0,0,0,0.05)' : 'none'};
+  box-sizing: border-box;
 `;
 
 const NavWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 90%;
-  max-width: 1400px;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0 1rem;
+  margin: 0;
+  box-sizing: border-box;
 `;
 
 const LogoContainer = styled.div`
@@ -213,10 +233,11 @@ const JoinButton = styled.button`
   font-weight: 600;
   border-radius: 30px;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 15px var(--shadow);
   
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 20px var(--shadow);
   }
   
   @media (max-width: 768px) {
@@ -251,18 +272,20 @@ const MenuIcon = styled.div`
     transition: all 0.3s ease;
     
     &:nth-child(1) {
-      top: ${props => props.open ? '10px' : '0px'};
-      transform: ${props => props.open ? 'rotate(45deg)' : 'rotate(0deg)'};
+      top: 0;
+      transform: ${props => props.open ? 'rotate(45deg) translate(6px, 6px)' : 'rotate(0)'};
+      background: ${props => props.open ? 'var(--text)' : ''};
     }
     
     &:nth-child(2) {
       top: 10px;
-      opacity: ${props => props.open ? '0' : '1'};
+      opacity: ${props => props.open ? 0 : 1};
     }
     
     &:nth-child(3) {
-      top: ${props => props.open ? '10px' : '20px'};
-      transform: ${props => props.open ? 'rotate(-45deg)' : 'rotate(0deg)'};
+      top: 20px;
+      transform: ${props => props.open ? 'rotate(-45deg) translate(6px, -6px)' : 'rotate(0)'};
+      background: ${props => props.open ? 'var(--text)' : ''};
     }
   }
 `;
@@ -273,12 +296,27 @@ const MobileMenu = styled.div`
   right: 0;
   width: 70%;
   height: 100vh;
-  background: rgba(8, 8, 8, 0.95);
+  background: var(--background);
   backdrop-filter: blur(10px);
   padding: 7rem 2rem 2rem;
   display: flex;
   flex-direction: column;
   z-index: 999;
+  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+  
+  @media (min-width: 769px) {
+    display: none;
+  }
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
   
   @media (min-width: 769px) {
     display: none;
@@ -286,12 +324,12 @@ const MobileMenu = styled.div`
 `;
 
 const MobileNavItem = styled.div`
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 `;
 
 const MobileNavLink = styled.a`
-  font-size: 1.5rem;
-  font-weight: 500;
+  font-size: 1.2rem;
+  font-weight: 600;
   color: var(--text);
   transition: all 0.3s ease;
   
@@ -301,17 +339,19 @@ const MobileNavLink = styled.a`
 `;
 
 const MobileJoinButton = styled.button`
-  margin-top: 2rem;
-  padding: 1rem 0;
+  margin-top: 1.5rem;
+  padding: 0.8rem 1.8rem;
   background: linear-gradient(to right, var(--primary), var(--secondary));
   color: white;
   font-weight: 600;
   border-radius: 30px;
+  align-self: flex-start;
   transition: all 0.3s ease;
-  text-align: center;
+  box-shadow: 0 4px 15px var(--shadow);
   
   &:hover {
-    opacity: 0.9;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px var(--shadow);
   }
 `;
 
