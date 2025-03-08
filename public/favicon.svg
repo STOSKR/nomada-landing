@@ -1,0 +1,51 @@
+<svg
+  width="100"
+  height="100"
+  viewBox="0 0 100 100"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- Fondo circular con gradiente -->
+  <circle cx="50" cy="50" r="50" fill="url(#logoGradient)" />
+  
+  <!-- Montaña -->
+  <path
+    d="M20 70L40 40L60 70H20Z"
+    fill="#FFFFFF"
+    fillOpacity="0.9"
+  />
+  
+  <!-- Montaña más grande -->
+  <path
+    d="M35 70L60 30L85 70H35Z"
+    fill="#FFFFFF"
+    fillOpacity="0.7"
+  />
+  
+  <!-- Sol -->
+  <circle cx="75" cy="25" r="10" fill="#FFFFFF" fillOpacity="0.9" />
+  
+  <!-- Camino -->
+  <path
+    d="M40 70C40 70 50 60 50 50C50 40 60 30 70 30"
+    stroke="#FFFFFF"
+    strokeWidth="3"
+    strokeLinecap="round"
+    strokeDasharray="1 6"
+  />
+  
+  <!-- Definición del gradiente -->
+  <defs>
+    <linearGradient
+      id="logoGradient"
+      x1="0"
+      y1="0"
+      x2="100"
+      y2="100"
+      gradientUnits="userSpaceOnUse"
+    >
+      <stop offset="0" stopColor="#23D997" />
+      <stop offset="1" stopColor="#F05454" />
+    </linearGradient>
+  </defs>
+</svg> 
