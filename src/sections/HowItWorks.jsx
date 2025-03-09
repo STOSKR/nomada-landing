@@ -111,7 +111,8 @@ const HowItWorks = () => {
               as={motion.div}
               variants={itemVariants}
               whileHover={{
-                scale: 1.03,
+                y: -5,
+                boxShadow: '0 10px 25px rgba(0, 0, 0, 0.08)',
                 transition: { duration: 0.3 }
               }}
             >
@@ -125,6 +126,7 @@ const HowItWorks = () => {
                 <StepConnector
                   as={motion.div}
                   variants={lineVariants}
+                  className="step-connector"
                 />
               )}
             </StepItem>
@@ -135,10 +137,12 @@ const HowItWorks = () => {
           as={motion.div}
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
         >
           <CTAText>¿Listo para comenzar tu viaje?</CTAText>
-          <CTAButton>Únete ahora</CTAButton>
+          <CTAButton onClick={() => document.querySelector('#join').scrollIntoView({ behavior: 'smooth' })}>
+            Únete ahora
+          </CTAButton>
         </CallToAction>
       </ContentContainer>
 
@@ -159,12 +163,8 @@ const HowItWorksSection = styled.section`
   padding: 6rem 0;
   width: 100vw;
   overflow: hidden;
-  background-color: var(--background);
+  background-color: #f0f5fa;
   box-sizing: border-box;
-  
-  @media (max-width: 768px) {
-    padding: 4rem 0;
-  }
 `;
 
 const ContentContainer = styled.div`
@@ -173,21 +173,25 @@ const ContentContainer = styled.div`
   position: relative;
   z-index: 1;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const TextContainer = styled.div`
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 5rem;
   width: 100%;
   padding: 0 1rem;
   box-sizing: border-box;
+  max-width: 800px;
 `;
 
 const SectionTag = styled.span`
   display: inline-block;
   padding: 0.5rem 1.5rem;
-  background: rgba(35, 217, 151, 0.1);
-  color: var(--primary);
+  background: rgba(127, 179, 213, 0.2);
+  color: #5a8db6;
   border-radius: 50px;
   font-size: 0.9rem;
   font-weight: 600;
@@ -195,8 +199,9 @@ const SectionTag = styled.span`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-size: clamp(2.2rem, 4vw, 3rem);
   margin-bottom: 1.5rem;
+  color: #444;
 `;
 
 const TitleGradient = styled.span`
@@ -214,70 +219,111 @@ const SectionDescription = styled.p`
 
 const StepsContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 3rem;
+  flex-direction: row;
+  justify-content: center;
+  gap: 4rem;
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
   
-  @media (max-width: 768px) {
-    gap: 2rem;
+  @media (max-width: 992px) {
+    flex-direction: column;
+    gap: 3rem;
+    padding: 0 1.5rem;
   }
 `;
 
 const StepItem = styled.div`
   display: flex;
-  gap: 2rem;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   position: relative;
-  padding: 1rem;
+  padding: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.03);
+  flex: 1;
+  max-width: 260px;
+  
+  @media (max-width: 992px) {
+    max-width: 100%;
+    align-items: flex-start;
+    text-align: left;
+    flex-direction: row;
+    gap: 1.5rem;
+  }
   
   @media (max-width: 768px) {
     flex-direction: column;
+    align-items: center;
+    text-align: center;
     gap: 1rem;
   }
 `;
 
 const StepNumber = styled.div`
-  font-size: 4rem;
+  font-size: 3.5rem;
   font-weight: 800;
-  background: linear-gradient(to right, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #7FB3D5;
   line-height: 1;
-  flex-shrink: 0;
-  width: 100px;
+  margin-bottom: 1.5rem;
+  
+  @media (max-width: 992px) {
+    margin-bottom: 0;
+    font-size: 3rem;
+  }
   
   @media (max-width: 768px) {
-    font-size: 3rem;
-    width: auto;
+    margin-bottom: 1rem;
   }
 `;
 
 const StepContent = styled.div`
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
 `;
 
 const StepTitle = styled.h3`
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
   font-weight: 600;
+  color: #444;
 `;
 
 const StepDescription = styled.p`
-  color: var(--text-secondary);
-  font-size: 1.1rem;
+  color: #666;
+  font-size: 1rem;
   line-height: 1.6;
 `;
 
 const StepConnector = styled.div`
   position: absolute;
-  top: 100%;
-  left: 50px;
-  width: 2px;
-  height: 2rem;
-  background: linear-gradient(to bottom, var(--primary), var(--secondary));
-  transform-origin: top;
+  top: 45%;
+  right: -3rem;
+  width: 2rem;
+  height: 2px;
+  background: linear-gradient(to right, #7FB3D5, #F7CAC9);
+  z-index: 1;
   
-  @media (max-width: 768px) {
-    left: 1.5rem;
+  @media (max-width: 992px) {
+    display: none;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(0, -50%) rotate(45deg);
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid #F7CAC9;
+    border-top: 2px solid #F7CAC9;
   }
 `;
 
@@ -293,20 +339,23 @@ const CallToAction = styled.div`
 const CTAText = styled.p`
   font-size: 1.5rem;
   font-weight: 600;
+  color: #444;
 `;
 
 const CTAButton = styled.button`
   padding: 1rem 3rem;
-  background: linear-gradient(to right, var(--primary), var(--secondary));
+  background: linear-gradient(to right, #7FB3D5, #F7CAC9);
   color: white;
   font-weight: 600;
   border-radius: 50px;
   font-size: 1.1rem;
   transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
   
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -319,8 +368,8 @@ const BackgroundDecoration = styled.div`
   height: 70%;
   background: radial-gradient(
     ellipse at center,
-    rgba(35, 217, 151, 0.1) 0%,
-    rgba(240, 84, 84, 0.05) 50%,
+    rgba(127, 179, 213, 0.1) 0%,
+    rgba(247, 202, 201, 0.05) 50%,
     transparent 80%
   );
   filter: blur(100px);

@@ -172,7 +172,7 @@ const TeamSection = styled.section`
   padding: 6rem 0;
   width: 100vw;
   overflow: hidden;
-  background-color: #FFFFFF;
+  background-color: #f8f9fa;
   box-sizing: border-box;
   
   @media (max-width: 768px) {

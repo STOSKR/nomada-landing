@@ -290,7 +290,7 @@ const BackgroundOverlay = styled.div`
 
 const ContentContainer = styled.div`
   width: 100%;
-  padding: 7rem 1rem 2rem;
+  padding: 7rem 3rem 2rem;
   position: relative;
   min-height: 100vh;
   display: flex;
@@ -306,44 +306,54 @@ const ContentContainer = styled.div`
 
 const HeroContent = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 2rem;
   margin-top: 5vh;
   width: 100%;
+  padding-left: 15%;
+  
+  @media (max-width: 1200px) {
+    padding-left: 10%;
+  }
   
   @media (max-width: 992px) {
     flex-direction: column;
     margin-top: 2vh;
     gap: 2rem;
+    padding-left: 0;
   }
 `;
 
 const LeftColumn = styled.div`
-  flex: 1;
-  max-width: 55%;
+  flex: 3;
+  max-width: 50%;
   display: flex;
   flex-direction: column;
   gap: 3rem;
+  margin-right: 2rem;
   
   @media (max-width: 992px) {
     max-width: 100%;
     width: 100%;
     gap: 2rem;
+    margin-right: 0;
   }
 `;
 
 const RightColumn = styled.div`
-  flex: 1;
-  max-width: 45%;
+  flex: 2;
+  max-width: 40%;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-right: 3%;
   
   @media (max-width: 992px) {
     max-width: 100%;
     width: 100%;
     margin-top: 2rem;
+    padding-right: 0;
   }
 `;
 
@@ -352,20 +362,28 @@ const TextContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.8rem;
+  padding-right: 1rem;
   
   @media (max-width: 992px) {
     max-width: 100%;
+    padding-right: 0;
+    text-align: center;
+    align-items: center;
   }
 `;
 
 const Title = styled.h1`
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(2.5rem, 5vw, 4.2rem);
   font-weight: 700;
   line-height: 1.1;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   color: var(--text);
   width: 100%;
+  
+  @media (max-width: 992px) {
+    text-align: center;
+  }
 `;
 
 const TitleGradient = styled.span`
@@ -381,12 +399,21 @@ const Subtitle = styled.p`
   max-width: 550px;
   line-height: 1.6;
   width: 100%;
+  
+  @media (max-width: 992px) {
+    margin: 0 auto;
+    text-align: center;
+  }
 `;
 
 const ButtonGroup = styled.div`
   display: flex;
   gap: 1.5rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
+  
+  @media (max-width: 992px) {
+    justify-content: center;
+  }
   
   @media (max-width: 480px) {
     flex-direction: column;
@@ -443,8 +470,13 @@ const SecondaryButton = styled.button`
 const StatsContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 2rem;
-  margin-top: 1rem;
+  gap: 2.5rem;
+  margin-top: 0.5rem;
+  
+  @media (max-width: 992px) {
+    justify-content: center;
+    margin: 0 auto;
+  }
   
   @media (max-width: 768px) {
     flex-wrap: wrap;
@@ -463,7 +495,7 @@ const StatItem = styled.div`
 `;
 
 const StatNumber = styled.span`
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
   font-weight: 700;
   background: linear-gradient(to right, var(--primary), var(--secondary));
   -webkit-background-clip: text;
@@ -488,31 +520,33 @@ const StatDivider = styled.div`
 const ImageContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 450px;
+  height: 420px;
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 500px;
-  margin: 0 auto;
+  max-width: 450px;
+  margin: 0;
   
   @media (max-width: 1200px) {
-    height: 400px;
-    max-width: 450px;
+    height: 380px;
+    max-width: 400px;
   }
   
   @media (max-width: 768px) {
     height: 300px;
     max-width: 350px;
+    margin: 0 auto;
   }
 `;
 
 const WorldMapSVG = styled.div`
   width: 100%;
   height: 100%;
-  opacity: 0.8;
+  opacity: 0.9;
   display: flex;
   justify-content: center;
   align-items: center;
+  transform: scale(0.95);
 `;
 
 const FloatingElement = styled.div`
@@ -521,6 +555,7 @@ const FloatingElement = styled.div`
   left: ${props => props.left || '0'};
   animation: float 6s ease-in-out infinite;
   animation-delay: ${props => props.delay || 0}s;
+  z-index: 2;
   
   @keyframes float {
     0% {

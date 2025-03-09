@@ -1,18 +1,116 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, useInView } from 'framer-motion';
 import { gsap } from 'gsap';
+import { db } from '../firebase/config';
+import { collection, addDoc, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { sendWelcomeEmail } from '../services/sendgrid';
+import * as localStorageService from '../services/localStorageService';
 
 const JoinNow = () => {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showAdmin, setShowAdmin] = useState(false);
+  const [subscribers, setSubscribers] = useState([]);
+  const [useLocalStorage, setUseLocalStorage] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+  const [emailError, setEmailError] = useState('');
 
   const formRef = useRef(null);
   const isInView = useInView(formRef, { once: false, amount: 0.3 });
 
-  // Validación de email simple
+  // Cargar suscriptores al inicio (solo una vez, sin listener)
+  useEffect(() => {
+    const fetchSubscribers = async () => {
+      try {
+        if (!showAdmin) return; // No cargar si no se muestra el panel de admin
+
+        setLoading(true);
+
+        if (useLocalStorage) {
+          // Usar localStorage como fuente de datos
+          const localSubscribers = localStorageService.getAllSubscribers();
+          setSubscribers(localSubscribers);
+        } else {
+          // Intentar cargar desde Firestore
+          try {
+            // Usar getDocs en lugar de onSnapshot para evitar listeners
+            const querySnapshot = await getDocs(collection(db, "subscribers"));
+            const subscribersList = [];
+            querySnapshot.forEach((doc) => {
+              subscribersList.push({
+                id: doc.id,
+                ...doc.data()
+              });
+            });
+            setSubscribers(subscribersList);
+          } catch (firestoreError) {
+            console.error("Error al cargar desde Firestore, usando localStorage como respaldo:", firestoreError);
+            setUseLocalStorage(true);
+            const localSubscribers = localStorageService.getAllSubscribers();
+            setSubscribers(localSubscribers);
+          }
+        }
+
+        setLoading(false);
+      } catch (error) {
+        console.error("Error al cargar suscriptores:", error);
+        setLoading(false);
+      }
+    };
+
+    if (showAdmin) {
+      fetchSubscribers();
+    }
+  }, [showAdmin, useLocalStorage]);
+
+  // Función para mostrar el panel de administración
+  const toggleAdmin = () => {
+    setShowAdmin(!showAdmin);
+  };
+
+  // Función para alternar entre Firestore y localStorage
+  const toggleStorage = () => {
+    setUseLocalStorage(!useLocalStorage);
+  };
+
+  // Función para eliminar un suscriptor
+  const removeSubscriber = async (subscriberId) => {
+    try {
+      setLoading(true);
+
+      if (useLocalStorage || subscriberId.startsWith('local_')) {
+        // Eliminar del localStorage
+        localStorageService.removeSubscriber(subscriberId);
+
+        // Actualizar la lista localmente
+        const updatedSubscribers = subscribers.filter(sub => sub.id !== subscriberId);
+        setSubscribers(updatedSubscribers);
+      } else {
+        // Eliminar de Firestore
+        try {
+          await deleteDoc(doc(db, "subscribers", subscriberId));
+
+          // Actualizar la lista localmente sin necesidad de volver a consultar Firestore
+          const updatedSubscribers = subscribers.filter(sub => sub.id !== subscriberId);
+          setSubscribers(updatedSubscribers);
+        } catch (firestoreError) {
+          console.error("Error al eliminar de Firestore:", firestoreError);
+          setError('No se pudo eliminar el suscriptor de Firestore. Intenta nuevamente más tarde.');
+        }
+      }
+
+      console.log("Suscriptor eliminado correctamente");
+      setLoading(false);
+    } catch (error) {
+      console.error("Error al eliminar suscriptor:", error);
+      setLoading(false);
+    }
+  };
+
+  // Validación de email
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
@@ -21,6 +119,11 @@ const JoinNow = () => {
   // Manejar envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Limpiar estados de error y éxito
+    setError('');
+    setEmailSent(false);
+    setEmailError('');
 
     // Validar email
     if (!email.trim()) {
@@ -34,17 +137,72 @@ const JoinNow = () => {
     }
 
     setLoading(true);
-    setError('');
 
     try {
-      // En un entorno real, aquí enviarías el email al backend
-      // Simulamos una petición con un timeout
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Verificar si el email existe localmente
+      if (localStorageService.emailExists(email)) {
+        setError('Este email ya está registrado.');
+        setLoading(false);
+        return;
+      }
 
-      // Aquí se enviaría el email a nomada.contact@gmail.com
-      console.log(`Nuevo early adopter registrado: ${email}`);
+      let subscriberSaved = false;
 
-      // Animación de éxito
+      if (!useLocalStorage) {
+        // Intentar guardar en Firestore primero
+        try {
+          // Verificar si el email ya existe en Firestore
+          const subscribersRef = collection(db, "subscribers");
+          const q = query(subscribersRef, where("email", "==", email));
+          const querySnapshot = await getDocs(q);
+
+          if (!querySnapshot.empty) {
+            setError('Este email ya está registrado.');
+            setLoading(false);
+            return;
+          }
+
+          // Añadir nuevo suscriptor a Firestore
+          const docRef = await addDoc(collection(db, "subscribers"), {
+            email: email,
+            createdAt: new Date(),
+            status: "active"
+          });
+
+          console.log("Suscriptor registrado en Firestore con ID:", docRef.id);
+          subscriberSaved = true;
+
+          // Guardar también en localStorage como respaldo
+          localStorageService.saveSubscriber({ email, status: "active" });
+        } catch (firestoreError) {
+          console.error("Error con Firestore, utilizando localStorage:", firestoreError);
+          // Si falla Firestore, usar localStorage
+          const newSubscriber = localStorageService.saveSubscriber({ email, status: "active" });
+          subscriberSaved = !!newSubscriber;
+        }
+      } else {
+        // Usar directamente localStorage
+        const newSubscriber = localStorageService.saveSubscriber({ email, status: "active" });
+        subscriberSaved = !!newSubscriber;
+      }
+
+      if (!subscriberSaved) {
+        throw new Error("No se pudo guardar el suscriptor");
+      }
+
+      // Enviar correo electrónico con SendGrid
+      console.log("Intentando enviar email a:", email);
+      const emailResult = await sendWelcomeEmail(email);
+
+      if (emailResult.success) {
+        console.log("Email enviado correctamente");
+        setEmailSent(true);
+      } else {
+        console.warn("Hubo un problema al enviar el email:", emailResult.error);
+        setEmailError(`No se pudo enviar el email de confirmación: ${emailResult.error}`);
+      }
+
+      // Mostrar mensaje de éxito incluso si el email falló
       gsap.to(formRef.current, {
         y: -10,
         opacity: 0,
@@ -65,6 +223,39 @@ const JoinNow = () => {
       setLoading(false);
     }
   };
+
+  // Contenido del panel de éxito
+  const renderSuccessMessage = () => (
+    <SuccessMessage className="success-message">
+      <SuccessIcon>✓</SuccessIcon>
+      <SuccessTitle>¡Gracias por unirte!</SuccessTitle>
+      <SuccessText>
+        Has sido añadido a nuestra lista de early adopters.
+        {emailSent ? (
+          <p>Hemos enviado un correo de confirmación a tu dirección de email.
+            Por favor, revisa tu bandeja de entrada (y la carpeta de spam)
+            para confirmar tu suscripción.</p>
+        ) : (
+          <p>
+            {emailError ? (
+              <>
+                <br />
+                <span style={{ color: '#ff6b6b' }}>
+                  {emailError}
+                  <br />No te preocupes, tu suscripción se ha guardado correctamente.
+                </span>
+              </>
+            ) : (
+              "Tu suscripción ha sido guardada. Pronto recibirás noticias de nosotros."
+            )}
+          </p>
+        )}
+      </SuccessText>
+      <ResetButton onClick={() => setSubmitted(false)}>
+        Volver al formulario
+      </ResetButton>
+    </SuccessMessage>
+  );
 
   // Variantes para animaciones
   const containerVariants = {
@@ -119,15 +310,7 @@ const JoinNow = () => {
                 No compartiremos tu información con terceros.
               </PrivacyText>
             </Form>
-          ) : (
-            <SuccessMessage className="success-message">
-              <SuccessIcon>✓</SuccessIcon>
-              <SuccessTitle>¡Gracias por unirte!</SuccessTitle>
-              <SuccessText>
-                Te hemos añadido a nuestra lista de early adopters. Pronto recibirás un correo de confirmación desde nomada.contact@gmail.com con más información sobre el lanzamiento.
-              </SuccessText>
-            </SuccessMessage>
-          )}
+          ) : renderSuccessMessage()}
         </JoinContainer>
 
         {/* Stats y decoraciones */}
@@ -152,6 +335,38 @@ const JoinNow = () => {
             <StatLabel>Gratis por 30 días</StatLabel>
           </StatItem>
         </StatsContainer>
+
+        {/* Panel de administración oculto - solo para desarrollo */}
+        <AdminButton onClick={toggleAdmin}>
+          {showAdmin ? "Ocultar Panel" : "Panel Admin (Dev)"}
+        </AdminButton>
+
+        {showAdmin && (
+          <AdminPanel>
+            <h3>Panel de Administración (Solo Desarrollo)</h3>
+            <p>Total de suscriptores: {subscribers.length}</p>
+            <SubscribersList>
+              {subscribers.length > 0 ? (
+                subscribers.map((sub, index) => (
+                  <SubscriberItem key={index}>
+                    <span>{sub.email}</span>
+                    <RemoveButton onClick={() => removeSubscriber(sub.id)}>
+                      Eliminar
+                    </RemoveButton>
+                  </SubscriberItem>
+                ))
+              ) : (
+                <p>No hay suscriptores registrados</p>
+              )}
+            </SubscribersList>
+            <p>
+              <small>
+                Nota: Este panel solo es visible en modo desarrollo. En producción,
+                esta información estaría en una base de datos segura.
+              </small>
+            </p>
+          </AdminPanel>
+        )}
       </ContentContainer>
 
       {/* Elementos decorativos */}
@@ -177,13 +392,15 @@ const JoinSection = styled.section`
   padding: 6rem 0;
   width: 100vw;
   overflow: hidden;
-  background-color: var(--background);
+  background-color: #eff5fb;
   box-sizing: border-box;
 `;
 
 const ContentContainer = styled.div`
   width: 100%;
+  max-width: 1000px;
   padding: 0 1rem;
+  margin: 0 auto;
   position: relative;
   z-index: 1;
   display: flex;
@@ -193,17 +410,19 @@ const ContentContainer = styled.div`
 `;
 
 const JoinContainer = styled.div`
-  padding: 4rem;
+  padding: 3rem;
   background: rgba(248, 249, 250, 0.8);
   backdrop-filter: blur(15px);
-  border-radius: 30px;
+  border-radius: 20px;
   border: 1px solid rgba(123, 179, 213, 0.1);
   width: 100%;
+  max-width: 800px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
+  margin-bottom: 3rem;
   
   @media (max-width: 768px) {
-    padding: 2.5rem;
+    padding: 2rem;
   }
 `;
 
@@ -211,94 +430,106 @@ const JoinTextContainer = styled.div`
   width: 100%;
   margin-bottom: 2rem;
   text-align: center;
+  max-width: 600px;
+  margin: 0 auto 2rem;
 `;
 
 const SectionTag = styled.span`
   display: inline-block;
   padding: 0.5rem 1.5rem;
   background: rgba(247, 202, 201, 0.2);
-  color: var(--secondary);
+  color: #d07f7e;
   border-radius: 50px;
   font-size: 0.9rem;
   font-weight: 600;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
 `;
 
 const SectionTitle = styled.h2`
-  font-size: clamp(2.2rem, 5vw, 3rem);
-  margin-bottom: 1.5rem;
-  color: var(--text);
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  margin-bottom: 1.2rem;
+  color: #444;
 `;
 
 const TitleGradient = styled.span`
-  background: linear-gradient(to right, var(--primary), var(--secondary));
+  background: linear-gradient(to right, #7FB3D5, #F7CAC9);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;
 
 const SectionDescription = styled.p`
-  font-size: clamp(1rem, 1.2vw, 1.1rem);
-  color: var(--text-light);
+  font-size: 1.05rem;
+  color: #666;
   line-height: 1.6;
+  max-width: 500px;
+  margin: 0 auto;
 `;
 
 const Form = styled.form`
   width: 100%;
-  margin-top: 2rem;
+  max-width: 500px;
+  margin: 2rem auto 0;
 `;
 
 const InputGroup = styled.div`
   display: flex;
   width: 100%;
-  max-width: 500px;
   margin: 0 auto;
-  gap: 1rem;
+  gap: 0.8rem;
   margin-bottom: 1rem;
+  background-color: white;
+  border-radius: 50px;
+  padding: 0.3rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(123, 179, 213, 0.15);
   
   @media (max-width: 480px) {
     flex-direction: column;
     gap: 1rem;
+    border-radius: 15px;
+    padding: 0.5rem;
   }
 `;
 
 const EmailInput = styled.input`
   flex: 1;
-  padding: 1rem 1.5rem;
+  padding: 0.9rem 1.2rem;
   border: none;
   outline: none;
   font-size: 1rem;
-  background: white;
-  border: 1px solid rgba(123, 179, 213, 0.2);
+  background: transparent;
   border-radius: 50px;
+  color: #444;
   
-  &:focus {
-    border-color: var(--primary);
+  &::placeholder {
+    color: #999;
   }
   
   @media (max-width: 480px) {
     width: 100%;
-    border-radius: 25px;
+    border-radius: 12px;
   }
 `;
 
 const SubmitButton = styled.button`
-  padding: 1rem 2rem;
-  background: linear-gradient(to right, var(--primary), var(--secondary));
+  padding: 0.9rem 1.8rem;
+  background: linear-gradient(to right, #7FB3D5, #F7CAC9);
   color: white;
   font-weight: 600;
   border: none;
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.3s ease;
+  white-space: nowrap;
   
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   }
   
   @media (max-width: 480px) {
     width: 100%;
-    border-radius: 25px;
+    border-radius: 12px;
   }
 `;
 
@@ -309,9 +540,12 @@ const ErrorMessage = styled.p`
 `;
 
 const PrivacyText = styled.p`
-  font-size: 0.85rem;
-  color: var(--text-light);
-  opacity: 0.7;
+  font-size: 0.8rem;
+  color: #888;
+  text-align: center;
+  max-width: 450px;
+  margin: 1rem auto 0;
+  line-height: 1.5;
 `;
 
 const SuccessMessage = styled.div`
@@ -348,17 +582,45 @@ const SuccessText = styled.p`
   line-height: 1.6;
 `;
 
+const ResetButton = styled.button`
+  margin-top: 1.5rem;
+  padding: 0.7rem 1.5rem;
+  background: transparent;
+  border: 1px solid #7FB3D5;
+  color: #5a8db6;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: rgba(127, 179, 213, 0.1);
+  }
+`;
+
 const StatsContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 100%;
-  margin-top: 4rem;
+  max-width: 700px;
+  margin: 2rem auto 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 15px;
+  padding: 1.5rem;
+  gap: 1.5rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
   
   @media (max-width: 768px) {
     flex-wrap: wrap;
-    gap: 2rem;
+    gap: 1.5rem;
     justify-content: center;
+    padding: 1rem;
+  }
+  
+  @media (max-width: 480px) {
+    flex-direction: column;
+    padding: 1.5rem 1rem;
   }
 `;
 
@@ -367,28 +629,31 @@ const StatItem = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
+  padding: 0 1.5rem;
+  text-align: center;
+  flex: 1;
 `;
 
 const StatValue = styled.span`
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: 2.2rem;
   font-weight: 700;
-  background: linear-gradient(to right, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #5a8db6;
 `;
 
 const StatLabel = styled.span`
-  font-size: 1rem;
-  color: var(--text-light);
+  font-size: 0.9rem;
+  color: #666;
+  white-space: nowrap;
 `;
 
 const StatDivider = styled.div`
   width: 1px;
   height: 50px;
-  background: rgba(123, 179, 213, 0.2);
+  background: rgba(123, 179, 213, 0.3);
   
   @media (max-width: 480px) {
-    display: none;
+    width: 80%;
+    height: 1px;
   }
 `;
 
@@ -416,6 +681,97 @@ const BackgroundDecoration2 = styled.div`
   opacity: 0.1;
   z-index: 1;
   filter: blur(60px);
+`;
+
+// Estilos para el panel de administración
+const AdminButton = styled.button`
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  z-index: 1000;
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+  
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const AdminPanel = styled.div`
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  width: 350px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  
+  h3 {
+    margin-top: 0;
+    font-size: 1rem;
+    color: #444;
+  }
+  
+  p {
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+  }
+  
+  small {
+    color: #777;
+  }
+`;
+
+const SubscribersList = styled.div`
+  margin: 1rem 0;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 0.5rem;
+`;
+
+const SubscriberItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  span {
+    font-size: 0.85rem;
+    color: #555;
+  }
+`;
+
+const RemoveButton = styled.button`
+  background: #f5f5f5;
+  border: none;
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.7rem;
+  color: #777;
+  cursor: pointer;
+  
+  &:hover {
+    background: #e74c3c;
+    color: white;
+  }
 `;
 
 export default JoinNow; 
