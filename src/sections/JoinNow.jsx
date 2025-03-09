@@ -14,7 +14,7 @@ const JoinNow = () => {
   const [loading, setLoading] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
   const [subscribers, setSubscribers] = useState([]);
-  const [useLocalStorage, setUseLocalStorage] = useState(false);
+  const [useLocalStorage, setUseLocalStorage] = useState(!db); // Usar localStorage por defecto si db no está disponible
   const [emailSent, setEmailSent] = useState(false);
   const [emailError, setEmailError] = useState('');
 
@@ -29,7 +29,7 @@ const JoinNow = () => {
 
         setLoading(true);
 
-        if (useLocalStorage) {
+        if (useLocalStorage || !db) {
           // Usar localStorage como fuente de datos
           const localSubscribers = localStorageService.getAllSubscribers();
           setSubscribers(localSubscribers);
@@ -73,6 +73,11 @@ const JoinNow = () => {
 
   // Función para alternar entre Firestore y localStorage
   const toggleStorage = () => {
+    // Solo permitir alternar a Firestore si db está disponible
+    if (!db && !useLocalStorage) {
+      console.warn("Firebase Firestore no está disponible. Usando localStorage.");
+      return;
+    }
     setUseLocalStorage(!useLocalStorage);
   };
 
@@ -81,7 +86,7 @@ const JoinNow = () => {
     try {
       setLoading(true);
 
-      if (useLocalStorage || subscriberId.startsWith('local_')) {
+      if (useLocalStorage || !db || subscriberId.startsWith('local_')) {
         // Eliminar del localStorage
         localStorageService.removeSubscriber(subscriberId);
 
@@ -148,7 +153,11 @@ const JoinNow = () => {
 
       let subscriberSaved = false;
 
-      if (!useLocalStorage) {
+      if (!db || useLocalStorage) {
+        // Usar directamente localStorage si Firestore no está disponible
+        const newSubscriber = localStorageService.saveSubscriber({ email, status: "active" });
+        subscriberSaved = !!newSubscriber;
+      } else {
         // Intentar guardar en Firestore primero
         try {
           // Verificar si el email ya existe en Firestore
@@ -180,10 +189,6 @@ const JoinNow = () => {
           const newSubscriber = localStorageService.saveSubscriber({ email, status: "active" });
           subscriberSaved = !!newSubscriber;
         }
-      } else {
-        // Usar directamente localStorage
-        const newSubscriber = localStorageService.saveSubscriber({ email, status: "active" });
-        subscriberSaved = !!newSubscriber;
       }
 
       if (!subscriberSaved) {
