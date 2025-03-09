@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Permitir lectura/escritura pública para suscriptores
+    match /subscribers/{document=**} {
+      allow read, write: if true;
+    }
+    
+    // Regla por defecto - denegar acceso
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+} 
