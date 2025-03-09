@@ -10,6 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "@sendgrid/mail": "^8.1.4",
+    "dotenv": "^16.4.7",
+    "firebase": "^11.4.0",
     "framer-motion": "^12.4.10",
     "gsap": "^3.12.7",
     "nomada-landing": "file:",
