@@ -4,7 +4,8 @@ import { motion, useInView } from 'framer-motion';
 import { gsap } from 'gsap';
 import { db } from '../firebase/config';
 import { collection, addDoc, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
-import { sendWelcomeEmail } from '../services/sendgrid';
+// Solo importar el servicio de emailjs
+import { sendWelcomeEmail } from '../services/emailjs';
 import * as localStorageService from '../services/localStorageService';
 
 const JoinNow = () => {
@@ -47,7 +48,7 @@ const JoinNow = () => {
             });
             setSubscribers(subscribersList);
           } catch (firestoreError) {
-            console.error("Error al cargar desde Firestore, usando localStorage como respaldo:", firestoreError);
+            // Si falla Firestore, usar localStorage como respaldo
             setUseLocalStorage(true);
             const localSubscribers = localStorageService.getAllSubscribers();
             setSubscribers(localSubscribers);
@@ -56,7 +57,6 @@ const JoinNow = () => {
 
         setLoading(false);
       } catch (error) {
-        console.error("Error al cargar suscriptores:", error);
         setLoading(false);
       }
     };
@@ -75,7 +75,6 @@ const JoinNow = () => {
   const toggleStorage = () => {
     // Solo permitir alternar a Firestore si db está disponible
     if (!db && !useLocalStorage) {
-      console.warn("Firebase Firestore no está disponible. Usando localStorage.");
       return;
     }
     setUseLocalStorage(!useLocalStorage);
@@ -102,15 +101,12 @@ const JoinNow = () => {
           const updatedSubscribers = subscribers.filter(sub => sub.id !== subscriberId);
           setSubscribers(updatedSubscribers);
         } catch (firestoreError) {
-          console.error("Error al eliminar de Firestore:", firestoreError);
           setError('No se pudo eliminar el suscriptor de Firestore. Intenta nuevamente más tarde.');
         }
       }
 
-      console.log("Suscriptor eliminado correctamente");
       setLoading(false);
     } catch (error) {
-      console.error("Error al eliminar suscriptor:", error);
       setLoading(false);
     }
   };
@@ -144,8 +140,31 @@ const JoinNow = () => {
     setLoading(true);
 
     try {
+      let existsInFirestore = false;
+
+      // Verificar si el email existe en Firestore (si está disponible)
+      if (db && !useLocalStorage) {
+        const subscribersRef = collection(db, "subscribers");
+        const q = query(subscribersRef, where("email", "==", email));
+        const querySnapshot = await getDocs(q);
+        existsInFirestore = !querySnapshot.empty;
+      }
+
       // Verificar si el email existe localmente
-      if (localStorageService.emailExists(email)) {
+      const existsInLocalStorage = localStorageService.emailExists(email);
+
+      // Si existe en localStorage pero no en Firestore, eliminar la entrada antigua en localStorage
+      if (existsInLocalStorage && !existsInFirestore && db && !useLocalStorage) {
+        // Obtener todos los suscriptores del localStorage
+        const localSubs = localStorageService.getAllSubscribers();
+        // Encontrar y eliminar el suscriptor con el mismo email
+        const subToRemove = localSubs.find(sub => sub.email === email);
+        if (subToRemove && subToRemove.id) {
+          localStorageService.removeSubscriber(subToRemove.id);
+        }
+      }
+      // Si existe en ambos lugares, no permitir el registro
+      else if ((existsInLocalStorage && useLocalStorage) || existsInFirestore) {
         setError('Este email ya está registrado.');
         setLoading(false);
         return;
@@ -160,17 +179,6 @@ const JoinNow = () => {
       } else {
         // Intentar guardar en Firestore primero
         try {
-          // Verificar si el email ya existe en Firestore
-          const subscribersRef = collection(db, "subscribers");
-          const q = query(subscribersRef, where("email", "==", email));
-          const querySnapshot = await getDocs(q);
-
-          if (!querySnapshot.empty) {
-            setError('Este email ya está registrado.');
-            setLoading(false);
-            return;
-          }
-
           // Añadir nuevo suscriptor a Firestore
           const docRef = await addDoc(collection(db, "subscribers"), {
             email: email,
@@ -178,13 +186,11 @@ const JoinNow = () => {
             status: "active"
           });
 
-          console.log("Suscriptor registrado en Firestore con ID:", docRef.id);
           subscriberSaved = true;
 
           // Guardar también en localStorage como respaldo
           localStorageService.saveSubscriber({ email, status: "active" });
         } catch (firestoreError) {
-          console.error("Error con Firestore, utilizando localStorage:", firestoreError);
           // Si falla Firestore, usar localStorage
           const newSubscriber = localStorageService.saveSubscriber({ email, status: "active" });
           subscriberSaved = !!newSubscriber;
@@ -195,15 +201,12 @@ const JoinNow = () => {
         throw new Error("No se pudo guardar el suscriptor");
       }
 
-      // Enviar correo electrónico con SendGrid
-      console.log("Intentando enviar email a:", email);
+      // Enviar correo electrónico
       const emailResult = await sendWelcomeEmail(email);
 
       if (emailResult.success) {
-        console.log("Email enviado correctamente");
         setEmailSent(true);
       } else {
-        console.warn("Hubo un problema al enviar el email:", emailResult.error);
         setEmailError(`No se pudo enviar el email de confirmación: ${emailResult.error}`);
       }
 
@@ -223,7 +226,6 @@ const JoinNow = () => {
       });
     } catch (error) {
       setError('Ha ocurrido un error. Por favor, inténtalo de nuevo.');
-      console.error('Error al registrar:', error);
     } finally {
       setLoading(false);
     }
@@ -237,11 +239,11 @@ const JoinNow = () => {
       <SuccessText>
         Has sido añadido a nuestra lista de early adopters.
         {emailSent ? (
-          <p>Hemos enviado un correo de confirmación a tu dirección de email.
+          <span>Hemos enviado un correo de confirmación a tu dirección de email.
             Por favor, revisa tu bandeja de entrada (y la carpeta de spam)
-            para confirmar tu suscripción.</p>
+            para confirmar tu suscripción.</span>
         ) : (
-          <p>
+          <span>
             {emailError ? (
               <>
                 <br />
@@ -253,7 +255,7 @@ const JoinNow = () => {
             ) : (
               "Tu suscripción ha sido guardada. Pronto recibirás noticias de nosotros."
             )}
-          </p>
+          </span>
         )}
       </SuccessText>
       <ResetButton onClick={() => setSubmitted(false)}>

@@ -18,17 +18,6 @@ const firebaseConfig = {
     measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
-// Verificar que la configuración sea válida sin exponer los valores
-console.log("Comprobando configuración Firebase:", {
-    apiKey: firebaseConfig.apiKey ? "✓" : "✗",
-    authDomain: firebaseConfig.authDomain ? "✓" : "✗",
-    projectId: firebaseConfig.projectId ? "✓" : "✗",
-    storageBucket: firebaseConfig.storageBucket ? "✓" : "✗",
-    messagingSenderId: firebaseConfig.messagingSenderId ? "✓" : "✗",
-    appId: firebaseConfig.appId ? "✓" : "✗",
-    measurementId: firebaseConfig.measurementId ? "✓" : "✗",
-});
-
 // Initialize Firebase
 let app;
 try {
@@ -37,7 +26,6 @@ try {
     }
     app = initializeApp(firebaseConfig);
 } catch (error) {
-    console.error('Error al inicializar Firebase:', error.message);
     // Crear un objeto app vacío para evitar errores en el resto del código
     app = { name: 'placeholder-app' };
 }
@@ -50,19 +38,19 @@ let functions = null;
 try {
     analytics = app.name !== 'placeholder-app' ? getAnalytics(app) : null;
 } catch (error) {
-    console.error("Error al inicializar Analytics:", error.message);
+    // Error silencioso
 }
 
 try {
     db = app.name !== 'placeholder-app' ? getFirestore(app) : null;
 } catch (error) {
-    console.error("Error al inicializar Firestore:", error.message);
+    // Error silencioso
 }
 
 try {
     functions = app.name !== 'placeholder-app' ? getFunctions(app) : null;
 } catch (error) {
-    console.error("Error al inicializar Functions:", error.message);
+    // Error silencioso
 }
 
 // Exportar los servicios
