@@ -1,0 +1,31 @@
+{
+    "rules": {
+        ".read": true,
+        "statistics": {
+            "visits": {
+                ".read": true,
+                ".write": true,
+                "total": {
+                    ".read": true,
+                    ".write": true
+                },
+                "daily": {
+                    ".read": true,
+                    ".write": true,
+                    "$date": {
+                        ".read": true,
+                        ".write": true
+                    }
+                },
+                "lastUpdated": {
+                    ".read": true,
+                    ".write": true
+                }
+            }
+        },
+        "$other": {
+            ".read": "auth != null",
+            ".write": "auth != null"
+        }
+    }
+}

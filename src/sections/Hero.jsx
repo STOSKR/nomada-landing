@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import * as THREE from 'three';
 import { gsap } from 'gsap';
+import VisitCounter from '../components/VisitCounter';
 
 const Hero = () => {
   const canvasRef = useRef(null);
@@ -202,6 +203,7 @@ const Hero = () => {
                 <StatText>Compartidas</StatText>
               </StatItem>
             </StatsContainer>
+
           </LeftColumn>
 
           <RightColumn
@@ -235,6 +237,16 @@ const Hero = () => {
                   <circle cx="200" cy="200" r="8" fill="var(--primary)" />
                 </svg>
               </WorldMapSVG>
+
+              {/* Contador de visitas en el centro del mapa */}
+              <VisitCounterOverlay
+                as={motion.div}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.7, duration: 0.5 }}
+              >
+                <VisitCounter inHero={true} />
+              </VisitCounterOverlay>
             </ImageContainer>
           </RightColumn>
         </HeroContent>
@@ -638,6 +650,41 @@ const ScrollIcon = styled.div`
       opacity: 0;
       transform: translate(-50%, 10px);
     }
+  }
+`;
+
+// Estilo para el contador de visitas dentro del mapa
+const VisitCounterOverlay = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 50%;
+  width: 190px;
+  height: 190px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  animation: pulse 4s infinite ease-in-out;
+  
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(123, 179, 213, 0.4); }
+    70% { box-shadow: 0 0 0 15px rgba(123, 179, 213, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(123, 179, 213, 0); }
+  }
+  
+  @media (max-width: 768px) {
+    width: 160px;
+    height: 160px;
   }
 `;
 

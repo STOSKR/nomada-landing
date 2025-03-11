@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 import { getFunctions } from "firebase/functions";
+import { getDatabase } from "firebase/database";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -15,7 +16,8 @@ const firebaseConfig = {
     storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
     messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
     appId: import.meta.env.VITE_FIREBASE_APP_ID,
-    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
+    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+    databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL || `https://${import.meta.env.VITE_FIREBASE_PROJECT_ID}-default-rtdb.firebaseio.com`
 };
 
 // Initialize Firebase
@@ -34,6 +36,7 @@ try {
 let analytics = null;
 let db = null;
 let functions = null;
+let database = null;
 
 try {
     analytics = app.name !== 'placeholder-app' ? getAnalytics(app) : null;
@@ -53,5 +56,11 @@ try {
     // Error silencioso
 }
 
+try {
+    database = app.name !== 'placeholder-app' ? getDatabase(app) : null;
+} catch (error) {
+    // Error silencioso
+}
+
 // Exportar los servicios
-export { app, analytics, db, functions };
+export { app, analytics, db, functions, database };

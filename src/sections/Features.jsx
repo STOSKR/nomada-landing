@@ -27,7 +27,11 @@ const featuresData = [
     icon: '📸',
     title: 'Comparte experiencias',
     description: 'Sube tus fotos, vídeos y aventuras para inspirar a otros y mantener un diario de tus viajes.',
-  },
+  }
+];
+
+// Datos de características adicionales (no se muestran en la vista principal)
+const extraFeaturesData = [
   {
     id: 5,
     icon: '🔍',
@@ -40,6 +44,42 @@ const featuresData = [
     title: 'Colecciona momentos',
     description: 'Guarda tus destinos favoritos, crea listas de deseos y registra todos tus viajes en un solo lugar.',
   },
+  {
+    id: 7,
+    icon: '📅',
+    title: 'Planificador inteligente',
+    description: 'Organiza tus itinerarios con ayuda de IA que te sugiere actividades según tus preferencias y tiempo disponible.',
+  },
+  {
+    id: 8,
+    icon: '🗺️',
+    title: 'Mapas interactivos',
+    description: 'Visualiza tus rutas en mapas personalizables con puntos de interés, reseñas y consejos de otros viajeros.',
+  },
+  {
+    id: 9,
+    icon: '📲',
+    title: 'Modo offline',
+    description: 'Accede a tus rutas, mapas y guías incluso sin conexión a internet durante tus aventuras.',
+  },
+  {
+    id: 10,
+    icon: '🔔',
+    title: 'Alertas de viaje',
+    description: 'Recibe notificaciones sobre cambios climáticos, eventos locales o alertas de seguridad en tus destinos.',
+  },
+  {
+    id: 11,
+    icon: '💬',
+    title: 'Traductor de viaje',
+    description: 'Comunícate fácilmente con herramientas de traducción integradas para superar barreras idiomáticas.',
+  },
+  {
+    id: 12,
+    icon: '🏆',
+    title: 'Logros y retos',
+    description: 'Gana insignias y completa desafíos mientras exploras nuevos destinos y compartes tus experiencias.',
+  }
 ];
 
 const Features = () => {
@@ -123,6 +163,15 @@ const Features = () => {
             </FeatureCard>
           ))}
         </FeaturesGrid>
+
+        <MoreFeaturesMessage
+          as={motion.div}
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ delay: 0.8, duration: 0.5 }}
+        >
+          ...y muchos más esperando a que los descubras en la primera versión
+        </MoreFeaturesMessage>
       </ContentContainer>
 
       {/* Elemento decorativo */}
@@ -197,14 +246,20 @@ const SectionDescription = styled.p`
 
 const FeaturesGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 0 1rem;
   box-sizing: border-box;
   
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
   @media (max-width: 768px) {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 `;
@@ -249,21 +304,27 @@ const FeatureDescription = styled.p`
   line-height: 1.6;
 `;
 
+const MoreFeaturesMessage = styled.p`
+  text-align: center;
+  margin-top: 3rem;
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--text-light);
+  font-weight: 500;
+  background: linear-gradient(to right, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+`;
+
 const BackgroundDecoration = styled.div`
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80%;
-  height: 80%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(35, 217, 151, 0.2) 0%,
-    rgba(240, 84, 84, 0.1) 70%,
-    transparent 100%
-  );
-  filter: blur(80px);
-  border-radius: 50%;
+  top: 0;
+  right: 0;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
+  filter: blur(100px);
+  opacity: 0.3;
   z-index: 0;
 `;
 

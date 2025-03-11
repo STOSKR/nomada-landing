@@ -48,17 +48,7 @@ const Contact = () => {
                 </IconWrapper>
                 <ContactMethodText>
                   <ContactMethodTitle>Email</ContactMethodTitle>
-                  <ContactMethodValue href="mailto:info@nomadapp.site">info@nomadapp.site</ContactMethodValue>
-                </ContactMethodText>
-              </ContactMethod>
-
-              <ContactMethod>
-                <IconWrapper>
-                  <FaPhoneAlt />
-                </IconWrapper>
-                <ContactMethodText>
-                  <ContactMethodTitle>Teléfono</ContactMethodTitle>
-                  <ContactMethodValue href="tel:+34600000000">+34 600 000 000</ContactMethodValue>
+                  <ContactMethodValue href="mailto:nomadapp.contact@gmail.com">nomadapp.contact@gmail.com</ContactMethodValue>
                 </ContactMethodText>
               </ContactMethod>
 
@@ -68,7 +58,7 @@ const Contact = () => {
                 </IconWrapper>
                 <ContactMethodText>
                   <ContactMethodTitle>Ubicación</ContactMethodTitle>
-                  <ContactMethodValue as="span">Madrid, España</ContactMethodValue>
+                  <ContactMethodValue as="span">Valencia, España</ContactMethodValue>
                 </ContactMethodText>
               </ContactMethod>
             </ContactMethods>

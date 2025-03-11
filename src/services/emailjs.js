@@ -82,14 +82,6 @@ export const sendContactEmail = async (formData) => {
             })
         };
 
-        // 1. Enviar notificación al equipo
-        const teamNotification = await emailjs.send(
-            import.meta.env.VITE_EMAILJS_SERVICE_ID,
-            import.meta.env.VITE_EMAILJS_CONTACT_TEMPLATE_ID,
-            enhancedFormData,
-            import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-        );
-
         // 2. Enviar respuesta automática al usuario
         const autoReply = await emailjs.send(
             import.meta.env.VITE_EMAILJS_SERVICE_ID,
