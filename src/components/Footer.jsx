@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import LogoSVG from './LogoSVG'; // Importar el logo SVG
+import LogoSVG from './LogoSVG';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -11,7 +11,7 @@ const Footer = () => {
         <FooterTop>
           <FooterLogo>
             <LogoContainer>
-              <LogoSVG width={40} height={40} /> {/* Usar el componente LogoSVG */}
+              <LogoSVG width={40} height={40} />
               <LogoText>Nómada</LogoText>
             </LogoContainer>
             <LogoTagline>
@@ -21,32 +21,20 @@ const Footer = () => {
 
           <FooterLinksContainer>
             <FooterLinksColumn>
-              <FooterLinksTitle>Sobre nosotros</FooterLinksTitle>
-              <FooterLinks>
-                <FooterLink href="#">Misión</FooterLink>
-                <FooterLink href="#">Equipo</FooterLink>
-                <FooterLink href="#">Prensa</FooterLink>
-                <FooterLink href="#">Contacto</FooterLink>
-              </FooterLinks>
-            </FooterLinksColumn>
-
-            <FooterLinksColumn>
-              <FooterLinksTitle>Nómada</FooterLinksTitle>
+              <FooterLinksTitle>Navegación</FooterLinksTitle>
               <FooterLinks>
                 <FooterLink href="#features">Características</FooterLink>
                 <FooterLink href="#how-it-works">Cómo funciona</FooterLink>
-                <FooterLink href="#team">Equipo</FooterLink>
                 <FooterLink href="#join">Únete</FooterLink>
+                <FooterLink href="#contact">Contacto</FooterLink>
               </FooterLinks>
             </FooterLinksColumn>
 
             <FooterLinksColumn>
               <FooterLinksTitle>Legal</FooterLinksTitle>
               <FooterLinks>
-                <FooterLink href="#">Privacidad</FooterLink>
-                <FooterLink href="#">Términos</FooterLink>
-                <FooterLink href="#">Cookies</FooterLink>
-                <FooterLink href="#">Licencias</FooterLink>
+                <FooterLink href="/privacidad">Privacidad</FooterLink>
+                <FooterLink href="/terminos">Términos</FooterLink>
               </FooterLinks>
             </FooterLinksColumn>
           </FooterLinksContainer>
@@ -61,15 +49,12 @@ const Footer = () => {
 
           <SocialLinks>
             <SocialLink
-              as={motion.a}
-              href="#"
+              href="https://instagram.com/nomadapp.site"
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ y: -3, scale: 1.1 }}
-              transition={{ duration: 0.2 }}
+              aria-label="Instagram"
             >
               <SocialIcon>
-                {/* Instagram icon */}
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                   <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
@@ -79,58 +64,20 @@ const Footer = () => {
             </SocialLink>
 
             <SocialLink
-              as={motion.a}
-              href="#"
+              href="https://twitter.com/nomadapp_site"
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ y: -3, scale: 1.1 }}
-              transition={{ duration: 0.2 }}
+              aria-label="Twitter"
             >
               <SocialIcon>
-                {/* Twitter icon */}
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
-                </svg>
-              </SocialIcon>
-            </SocialLink>
-
-            <SocialLink
-              as={motion.a}
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ y: -3, scale: 1.1 }}
-              transition={{ duration: 0.2 }}
-            >
-              <SocialIcon>
-                {/* Facebook icon */}
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                </svg>
-              </SocialIcon>
-            </SocialLink>
-
-            <SocialLink
-              as={motion.a}
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ y: -3, scale: 1.1 }}
-              transition={{ duration: 0.2 }}
-            >
-              <SocialIcon>
-                {/* YouTube icon */}
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
-                  <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
                 </svg>
               </SocialIcon>
             </SocialLink>
           </SocialLinks>
         </FooterBottom>
       </FooterContent>
-
-      <FooterBackground />
     </FooterContainer>
   );
 };
@@ -138,60 +85,26 @@ const Footer = () => {
 // Estilos
 const FooterContainer = styled.footer`
   background: var(--background-secondary);
-  padding: 5rem 0 2rem;
+  padding: 4rem 2rem 2rem;
   position: relative;
   overflow: hidden;
   box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.03);
-  width: 100vw;
-  box-sizing: border-box;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(
-      to right,
-      transparent,
-      var(--primary),
-      var(--secondary),
-      transparent
-    );
-  }
-`;
-
-const FooterBackground = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
-  z-index: -1;
-  opacity: 0.4;
-  background-image: 
-    radial-gradient(circle at 10% 90%, rgba(123, 179, 213, 0.1) 0%, transparent 20%),
-    radial-gradient(circle at 90% 10%, rgba(247, 202, 201, 0.1) 0%, transparent 25%);
+  box-sizing: border-box;
 `;
 
 const FooterContent = styled.div`
-  width: 100%;
-  padding: 0 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
   position: relative;
   z-index: 1;
-  box-sizing: border-box;
-  
-  @media (max-width: 768px) {
-    width: 95%;
-    padding: 0 1.5rem;
-  }
 `;
 
 const FooterTop = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 3rem;
+  gap: 4rem;
+  margin-bottom: 3rem;
   
   @media (max-width: 768px) {
     flex-direction: column;
@@ -223,6 +136,7 @@ const LogoText = styled.span`
 const LogoTagline = styled.p`
   color: var(--text-light);
   font-size: 1rem;
+  line-height: 1.5;
 `;
 
 const FooterLinksContainer = styled.div`
@@ -231,60 +145,50 @@ const FooterLinksContainer = styled.div`
   
   @media (max-width: 768px) {
     gap: 2rem;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  
-  @media (max-width: 480px) {
-    flex-direction: column;
+    justify-content: flex-start;
   }
 `;
 
 const FooterLinksColumn = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.2rem;
 `;
 
 const FooterLinksTitle = styled.h4`
   font-size: 1.1rem;
-  font-weight: 600;
   color: var(--text);
-  position: relative;
-  
-  &:after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -8px;
-    width: 30px;
-    height: 2px;
-    background: linear-gradient(to right, var(--primary), var(--secondary));
-  }
+  margin-bottom: 0.5rem;
 `;
 
 const FooterLinks = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.8rem;
 `;
 
 const FooterLink = styled.a`
-  font-size: 0.95rem;
   color: var(--text-light);
-  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
   
   &:hover {
     color: var(--primary);
-    transform: translateX(5px);
   }
 `;
 
-const FooterDivider = styled.div`
-  width: 100%;
+const FooterDivider = styled.hr`
+  border: none;
   height: 1px;
-  background: rgba(0, 0, 0, 0.05);
-  margin: 3rem 0;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--text-light),
+    transparent
+  );
+  margin: 2rem 0;
+  opacity: 0.2;
 `;
 
 const FooterBottom = styled.div`
@@ -294,14 +198,14 @@ const FooterBottom = styled.div`
   
   @media (max-width: 768px) {
     flex-direction: column;
-    gap: 1.5rem;
-    align-items: flex-start;
+    gap: 1rem;
+    text-align: center;
   }
 `;
 
 const Copyright = styled.p`
-  font-size: 0.9rem;
   color: var(--text-light);
+  font-size: 0.9rem;
 `;
 
 const SocialLinks = styled.div`
@@ -309,27 +213,19 @@ const SocialLinks = styled.div`
   gap: 1rem;
 `;
 
-const SocialLink = styled.a`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(123, 179, 213, 0.1);
-  transition: all 0.3s ease;
+const SocialLink = styled(motion.a)`
+  color: var(--text-light);
+  transition: color 0.3s ease;
   
   &:hover {
-    background: linear-gradient(to right, var(--primary), var(--secondary));
+    color: var(--primary);
   }
 `;
 
 const SocialIcon = styled.div`
-  color: var(--text);
-  
-  ${SocialLink}:hover & {
-    color: white;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default Footer; 

@@ -6,15 +6,15 @@ import { motion, useInView } from 'framer-motion';
 const teamMembers = [
   {
     id: 1,
-    name: 'Alex Rodríguez',
-    role: 'Co-fundador & CEO',
+    name: 'Shiyi Cheng',
+    role: 'Fundador & Desarrollador',
     bio: 'Apasionado por los viajes y la tecnología. Ha visitado más de 30 países y quiere hacer que viajar sea una experiencia más conectada y auténtica.',
     avatar: '👨‍💻', // Emoji como avatar temporal
   },
   {
     id: 2,
-    name: 'Laura González',
-    role: 'Co-fundadora & CTO',
+    name: 'Sebastian Vega',
+    role: 'Fundador & Desarrollador',
     bio: 'Desarrolladora full-stack con experiencia en crear plataformas sociales. Combina su amor por el código con su pasión por descubrir nuevas culturas.',
     avatar: '👩‍💻', // Emoji como avatar temporal
   }

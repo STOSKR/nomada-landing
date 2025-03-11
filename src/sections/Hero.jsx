@@ -188,18 +188,18 @@ const Hero = () => {
               custom={3}
             >
               <StatItem>
-                <StatNumber>+10K</StatNumber>
-                <StatText>Aventureros</StatText>
+                <StatNumber>Comunidad</StatNumber>
+                <StatText>En crecimiento</StatText>
               </StatItem>
               <StatDivider />
               <StatItem>
-                <StatNumber>+1.5K</StatNumber>
-                <StatText>Rutas</StatText>
+                <StatNumber>Viajeros</StatNumber>
+                <StatText>Ayudándonos</StatText>
               </StatItem>
               <StatDivider />
               <StatItem>
-                <StatNumber>+120</StatNumber>
-                <StatText>Países</StatText>
+                <StatNumber>Experiencias</StatNumber>
+                <StatText>Compartidas</StatText>
               </StatItem>
             </StatsContainer>
           </LeftColumn>

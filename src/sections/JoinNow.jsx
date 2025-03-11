@@ -13,58 +13,30 @@ const JoinNow = () => {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [showAdmin, setShowAdmin] = useState(false);
-  const [subscribers, setSubscribers] = useState([]);
-  const [useLocalStorage, setUseLocalStorage] = useState(!db); // Usar localStorage por defecto si db no está disponible
+  const [useLocalStorage, setUseLocalStorage] = useState(!db);
   const [emailSent, setEmailSent] = useState(false);
   const [emailError, setEmailError] = useState('');
+  const [subscribersCount, setSubscribersCount] = useState(0);
 
   const formRef = useRef(null);
   const isInView = useInView(formRef, { once: false, amount: 0.3 });
 
-  // Cargar suscriptores al inicio (solo una vez, sin listener)
+  // Obtener el conteo de suscriptores
   useEffect(() => {
-    const fetchSubscribers = async () => {
-      try {
-        if (!showAdmin) return; // No cargar si no se muestra el panel de admin
-
-        setLoading(true);
-
-        if (useLocalStorage || !db) {
-          // Usar localStorage como fuente de datos
-          const localSubscribers = localStorageService.getAllSubscribers();
-          setSubscribers(localSubscribers);
-        } else {
-          // Intentar cargar desde Firestore
-          try {
-            // Usar getDocs en lugar de onSnapshot para evitar listeners
-            const querySnapshot = await getDocs(collection(db, "subscribers"));
-            const subscribersList = [];
-            querySnapshot.forEach((doc) => {
-              subscribersList.push({
-                id: doc.id,
-                ...doc.data()
-              });
-            });
-            setSubscribers(subscribersList);
-          } catch (firestoreError) {
-            // Si falla Firestore, usar localStorage como respaldo
-            setUseLocalStorage(true);
-            const localSubscribers = localStorageService.getAllSubscribers();
-            setSubscribers(localSubscribers);
-          }
+    const getSubscribersCount = async () => {
+      if (db) {
+        try {
+          const subscribersRef = collection(db, "subscribers");
+          const querySnapshot = await getDocs(subscribersRef);
+          setSubscribersCount(querySnapshot.size);
+        } catch (error) {
+          console.error("Error al obtener el conteo de suscriptores:", error);
         }
-
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
       }
     };
 
-    if (showAdmin) {
-      fetchSubscribers();
-    }
-  }, [showAdmin, useLocalStorage]);
+    getSubscribersCount();
+  }, []);
 
   // Función para mostrar el panel de administración
   const toggleAdmin = () => {
@@ -78,37 +50,6 @@ const JoinNow = () => {
       return;
     }
     setUseLocalStorage(!useLocalStorage);
-  };
-
-  // Función para eliminar un suscriptor
-  const removeSubscriber = async (subscriberId) => {
-    try {
-      setLoading(true);
-
-      if (useLocalStorage || !db || subscriberId.startsWith('local_')) {
-        // Eliminar del localStorage
-        localStorageService.removeSubscriber(subscriberId);
-
-        // Actualizar la lista localmente
-        const updatedSubscribers = subscribers.filter(sub => sub.id !== subscriberId);
-        setSubscribers(updatedSubscribers);
-      } else {
-        // Eliminar de Firestore
-        try {
-          await deleteDoc(doc(db, "subscribers", subscriberId));
-
-          // Actualizar la lista localmente sin necesidad de volver a consultar Firestore
-          const updatedSubscribers = subscribers.filter(sub => sub.id !== subscriberId);
-          setSubscribers(updatedSubscribers);
-        } catch (firestoreError) {
-          setError('No se pudo eliminar el suscriptor de Firestore. Intenta nuevamente más tarde.');
-        }
-      }
-
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-    }
   };
 
   // Validación de email
@@ -277,6 +218,38 @@ const JoinNow = () => {
     }
   };
 
+  // Barra de carga con imagen y mensaje
+  const ProgressBarContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 800px;
+    background: #f0f0f0;
+    border-radius: 10px;
+    overflow: hidden;
+  `;
+
+  const ProgressBar = styled.div`
+    height: 20px;
+    background: linear-gradient(to right, #7FB3D5, #F7CAC9);
+    width: ${({ daysRemaining }) => (100 - daysRemaining / 30 * 100)}%;
+    transition: width 0.5s ease;
+  `;
+
+  const TravelerImage = styled.img`
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 1rem;
+  `;
+
+  const ProgressMessage = styled.span`
+    font-size: 1rem;
+    color: #444;
+  `;
+
   return (
     <JoinSection id="join">
       <ContentContainer>
@@ -328,67 +301,21 @@ const JoinNow = () => {
           transition={{ delay: 0.4, duration: 0.8 }}
         >
           <StatItem>
-            <StatValue>+500</StatValue>
-            <StatLabel>Early adopters</StatLabel>
+            <StatValue>{subscribersCount || 1}</StatValue>
+            <StatLabel>Exploradores registrados</StatLabel>
           </StatItem>
           <StatDivider />
           <StatItem>
-            <StatValue>14</StatValue>
-            <StatLabel>Días para el lanzamiento</StatLabel>
+            <StatValue>6 de abril</StatValue>
+            <StatLabel>Fecha de lanzamiento</StatLabel>
           </StatItem>
           <StatDivider />
           <StatItem>
             <StatValue>100%</StatValue>
-            <StatLabel>Gratis por 30 días</StatLabel>
+            <StatLabel>Gratis en fase Beta</StatLabel>
           </StatItem>
         </StatsContainer>
-
-        {/* Panel de administración oculto - solo para desarrollo */}
-        <AdminButton onClick={toggleAdmin}>
-          {showAdmin ? "Ocultar Panel" : "Panel Admin (Dev)"}
-        </AdminButton>
-
-        {showAdmin && (
-          <AdminPanel>
-            <h3>Panel de Administración (Solo Desarrollo)</h3>
-            <p>Total de suscriptores: {subscribers.length}</p>
-            <SubscribersList>
-              {subscribers.length > 0 ? (
-                subscribers.map((sub, index) => (
-                  <SubscriberItem key={index}>
-                    <span>{sub.email}</span>
-                    <RemoveButton onClick={() => removeSubscriber(sub.id)}>
-                      Eliminar
-                    </RemoveButton>
-                  </SubscriberItem>
-                ))
-              ) : (
-                <p>No hay suscriptores registrados</p>
-              )}
-            </SubscribersList>
-            <p>
-              <small>
-                Nota: Este panel solo es visible en modo desarrollo. En producción,
-                esta información estaría en una base de datos segura.
-              </small>
-            </p>
-          </AdminPanel>
-        )}
       </ContentContainer>
-
-      {/* Elementos decorativos */}
-      <BackgroundDecoration1
-        as={motion.div}
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 0.7 } : { opacity: 0 }}
-        transition={{ duration: 1.2 }}
-      />
-      <BackgroundDecoration2
-        as={motion.div}
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 0.7 } : { opacity: 0 }}
-        transition={{ duration: 1.2, delay: 0.3 }}
-      />
     </JoinSection>
   );
 };
@@ -500,285 +427,157 @@ const InputGroup = styled.div`
 
 const EmailInput = styled.input`
   flex: 1;
-  padding: 0.9rem 1.2rem;
+  padding: 0.8rem 1.2rem;
   border: none;
-  outline: none;
+  border-radius: 25px;
   font-size: 1rem;
-  background: transparent;
-  border-radius: 50px;
-  color: #444;
+  color: #333;
+  background: white;
   
-  &::placeholder {
-    color: #999;
+  &:focus {
+    outline: none;
   }
   
-  @media (max-width: 480px) {
-    width: 100%;
-    border-radius: 12px;
+  &::placeholder {
+    color: #666;
+  }
+  
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
   }
 `;
 
 const SubmitButton = styled.button`
-  padding: 0.9rem 1.8rem;
-  background: linear-gradient(to right, #7FB3D5, #F7CAC9);
-  color: white;
-  font-weight: 600;
+  padding: 0.8rem 1.6rem;
   border: none;
   border-radius: 50px;
+  background: linear-gradient(to right, #7FB3D5, #F7CAC9);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  white-space: nowrap;
   
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   }
   
-  @media (max-width: 480px) {
-    width: 100%;
-    border-radius: 12px;
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
   }
 `;
 
 const ErrorMessage = styled.p`
-  color: #e74c3c;
+  color: #ff6b6b;
   font-size: 0.9rem;
-  margin-top: -0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
 `;
 
 const PrivacyText = styled.p`
-  font-size: 0.8rem;
-  color: #888;
+  font-size: 0.9rem;
+  color: #333;
   text-align: center;
-  max-width: 450px;
-  margin: 1rem auto 0;
-  line-height: 1.5;
+  margin-top: 1rem;
 `;
 
 const SuccessMessage = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-align: center;
   padding: 2rem;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  margin-top: 2rem;
 `;
 
-const SuccessIcon = styled.div`
-  width: 70px;
-  height: 70px;
-  background: linear-gradient(to right, var(--primary), var(--secondary));
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
+const SuccessIcon = styled.span`
   font-size: 2rem;
-  margin-bottom: 1.5rem;
+  color: #4caf50;
+  margin-bottom: 1rem;
 `;
 
 const SuccessTitle = styled.h3`
-  font-size: 1.8rem;
+  font-size: 1.5rem;
+  color: #444;
   margin-bottom: 1rem;
-  color: var(--text);
 `;
 
 const SuccessText = styled.p`
-  font-size: 1.1rem;
-  color: var(--text-light);
-  max-width: 500px;
-  line-height: 1.6;
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 2rem;
 `;
 
 const ResetButton = styled.button`
-  margin-top: 1.5rem;
-  padding: 0.7rem 1.5rem;
-  background: transparent;
-  border: 1px solid #7FB3D5;
-  color: #5a8db6;
+  padding: 0.8rem 1.6rem;
+  border: none;
   border-radius: 50px;
-  font-size: 0.9rem;
+  background: linear-gradient(to right, #7FB3D5, #F7CAC9);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   
   &:hover {
-    background: rgba(127, 179, 213, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   }
 `;
 
 const StatsContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+  padding: 3rem 4rem;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  margin-top: 3rem;
   width: 100%;
-  max-width: 700px;
-  margin: 2rem auto 0;
-  background-color: rgba(255, 255, 255, 0.7);
-  border-radius: 15px;
-  padding: 1.5rem;
-  gap: 1.5rem;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+  max-width: 800px;
   
   @media (max-width: 768px) {
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    justify-content: center;
-    padding: 1rem;
-  }
-  
-  @media (max-width: 480px) {
+    padding: 2rem;
     flex-direction: column;
-    padding: 1.5rem 1rem;
+    gap: 2rem;
   }
 `;
 
 const StatItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0 1.5rem;
   text-align: center;
-  flex: 1;
+  padding: 0 2rem;
+  
+  @media (max-width: 768px) {
+    padding: 1rem 0;
+  }
 `;
 
 const StatValue = styled.span`
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: #5a8db6;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #444;
+  display: block;
+  margin-bottom: 0.5rem;
 `;
 
 const StatLabel = styled.span`
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #666;
-  white-space: nowrap;
 `;
 
 const StatDivider = styled.div`
-  width: 1px;
-  height: 50px;
-  background: rgba(123, 179, 213, 0.3);
+  width: 2px;
+  height: 60px;
+  background-color: rgba(123, 179, 213, 0.2);
   
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     width: 80%;
-    height: 1px;
+    height: 2px;
   }
 `;
 
-const BackgroundDecoration1 = styled.div`
-  position: absolute;
-  top: 10%;
-  left: 5%;
-  width: 300px;
-  height: 300px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
-  opacity: 0.1;
-  z-index: 1;
-  filter: blur(50px);
-`;
-
-const BackgroundDecoration2 = styled.div`
-  position: absolute;
-  bottom: 10%;
-  right: 5%;
-  width: 400px;
-  height: 400px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
-  opacity: 0.1;
-  z-index: 1;
-  filter: blur(60px);
-`;
-
-// Estilos para el panel de administración
-const AdminButton = styled.button`
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 0.5rem 1rem;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  z-index: 1000;
-  opacity: 0.3;
-  transition: opacity 0.3s ease;
-  
-  &:hover {
-    opacity: 1;
-  }
-`;
-
-const AdminPanel = styled.div`
-  position: fixed;
-  bottom: 70px;
-  right: 20px;
-  width: 350px;
-  max-height: 400px;
-  overflow-y: auto;
-  background: white;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  
-  h3 {
-    margin-top: 0;
-    font-size: 1rem;
-    color: #444;
-  }
-  
-  p {
-    font-size: 0.9rem;
-    margin: 0.5rem 0;
-  }
-  
-  small {
-    color: #777;
-  }
-`;
-
-const SubscribersList = styled.div`
-  margin: 1rem 0;
-  max-height: 200px;
-  overflow-y: auto;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  padding: 0.5rem;
-`;
-
-const SubscriberItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem;
-  border-bottom: 1px solid #eee;
-  
-  &:last-child {
-    border-bottom: none;
-  }
-  
-  span {
-    font-size: 0.85rem;
-    color: #555;
-  }
-`;
-
-const RemoveButton = styled.button`
-  background: #f5f5f5;
-  border: none;
-  border-radius: 4px;
-  padding: 0.2rem 0.5rem;
-  font-size: 0.7rem;
-  color: #777;
-  cursor: pointer;
-  
-  &:hover {
-    background: #e74c3c;
-    color: white;
-  }
-`;
-
-export default JoinNow; 
+export default JoinNow;

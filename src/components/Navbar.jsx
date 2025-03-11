@@ -59,6 +59,7 @@ const Navbar = () => {
     { title: 'Cómo funciona', href: '#how-it-works' },
     { title: 'Equipo', href: '#team' },
     { title: 'Únete', href: '#join' },
+    { title: 'Contacto', href: '#contact' },
   ];
 
   return (

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import GlobalStyles from './styles/GlobalStyles';
+import { Analytics } from '@vercel/analytics/react';
 
 // Componentes
 import Navbar from './components/Navbar';
@@ -12,6 +13,7 @@ import Features from './sections/Features';
 import HowItWorks from './sections/HowItWorks';
 import Team from './sections/Team';
 import JoinNow from './sections/JoinNow';
+import Contact from './sections/Contact';
 
 function App() {
   // Efecto para precargar las fuentes de Google
@@ -38,8 +40,10 @@ function App() {
         <HowItWorks />
         <Team />
         <JoinNow />
+        <Contact />
       </MainContent>
       <Footer />
+      <Analytics />
     </AppContainer>
   );
 }
