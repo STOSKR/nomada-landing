@@ -1,16 +1,14 @@
 import emailjs from '@emailjs/browser';
 
-// IDs de servicio y plantilla (vendrán de variables de entorno)
-const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || '';
-const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || '';
-const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '';
-
 // Inicializar EmailJS
 const initEmailJS = () => {
-    if (PUBLIC_KEY) {
-        emailjs.init(PUBLIC_KEY);
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '';
+    if (publicKey) {
+        console.log('Inicializando EmailJS con clave pública');
+        emailjs.init(publicKey);
         return true;
     }
+    console.log('No se pudo inicializar EmailJS: Clave pública no disponible');
     return false;
 };
 
@@ -42,7 +40,12 @@ export const sendWelcomeEmail = async (toEmail) => {
         };
 
         // Enviar el correo
-        const response = await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams);
+        const response = await emailjs.send(
+            import.meta.env.VITE_EMAILJS_SERVICE_ID,
+            import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+            templateParams,
+            import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        );
 
         if (response.status === 200) {
             return { success: true };
@@ -70,6 +73,14 @@ export const sendContactEmail = async (formData) => {
             };
         }
 
+        // Si no se ha inicializado correctamente
+        if (!isInitialized) {
+            return {
+                success: false,
+                error: 'El servicio de correo no está configurado correctamente.'
+            };
+        }
+
         // Añadir fecha actual al formulario
         const enhancedFormData = {
             ...formData,
@@ -82,16 +93,32 @@ export const sendContactEmail = async (formData) => {
             })
         };
 
-        // 2. Enviar respuesta automática al usuario
-        const autoReply = await emailjs.send(
-            import.meta.env.VITE_EMAILJS_SERVICE_ID,
-            import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID,
+        const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+        const contactTemplateId = import.meta.env.VITE_EMAILJS_CONTACT_TEMPLATE_ID;
+        const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+        console.log('Service ID:', serviceId);
+        console.log('Contact Template ID:', contactTemplateId);
+        console.log('Public Key (primeros 4 caracteres):', publicKey ? publicKey.substring(0, 4) + '...' : 'undefined');
+
+        if (!serviceId || !contactTemplateId || !publicKey) {
+            console.error('Faltan variables de entorno necesarias para EmailJS');
+            return {
+                success: false,
+                error: 'Configuración de correo incompleta. Contacta al administrador.'
+            };
+        }
+
+        // Enviar notificación al equipo (único correo que se enviará)
+        const response = await emailjs.send(
+            serviceId,
+            contactTemplateId,
             enhancedFormData,
-            import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+            publicKey
         );
 
-        // Verificar que ambos correos se enviaron correctamente
-        if (teamNotification.status === 200 && autoReply.status === 200) {
+        // Verificar que el correo se envió correctamente
+        if (response.status === 200) {
             return {
                 success: true,
                 message: 'Tu mensaje ha sido enviado correctamente. Pronto nos pondremos en contacto contigo.'

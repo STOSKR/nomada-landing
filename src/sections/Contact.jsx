@@ -1,9 +1,20 @@
 import styled from 'styled-components';
 import ContactForm from '../components/ContactForm';
 import { motion } from 'framer-motion';
-import { FaEnvelope, FaGithub, FaLinkedin, FaTwitter, FaMapMarkerAlt, FaPhoneAlt } from 'react-icons/fa';
+import { FaEnvelope, FaGithub, FaLinkedin, FaTwitter, FaMapMarkerAlt, FaPhoneAlt, FaInstagram, FaDiscord, FaCopy } from 'react-icons/fa';
+import { useState } from 'react';
 
 const Contact = () => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyEmail = () => {
+    const email = "nomadapp.contact@gmail.com";
+    navigator.clipboard.writeText(email).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
   return (
     <ContactSection id="contact">
       <BackgroundDecoration />
@@ -38,7 +49,7 @@ const Contact = () => {
           <ContactInfo>
             <InfoTitle>Otras formas de contacto</InfoTitle>
             <InfoText>
-              También puedes encontrarnos en nuestras redes sociales o enviarnos un email directamente.
+              También puedes encontrarnos en nuestras redes sociales o enviarnos un email si ha dejado de funcionar el formulario.
             </InfoText>
 
             <ContactMethods>
@@ -48,7 +59,22 @@ const Contact = () => {
                 </IconWrapper>
                 <ContactMethodText>
                   <ContactMethodTitle>Email</ContactMethodTitle>
-                  <ContactMethodValue href="mailto:nomadapp.contact@gmail.com">nomadapp.contact@gmail.com</ContactMethodValue>
+                  <EmailContainer>
+                    <ContactMethodValue href="mailto:nomadapp.contact@gmail.com">
+                      nomadapp.contact@gmail.com
+                    </ContactMethodValue>
+                    <CopyButton
+                      onClick={handleCopyEmail}
+                      as={motion.button}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <FaCopy />
+                      <CopyTooltip visible={copied}>
+                        {copied ? "¡Copiado!" : "Copiar"}
+                      </CopyTooltip>
+                    </CopyButton>
+                  </EmailContainer>
                 </ContactMethodText>
               </ContactMethod>
 
@@ -66,14 +92,14 @@ const Contact = () => {
             <SocialLinksContainer>
               <SocialLinksTitle>Síguenos</SocialLinksTitle>
               <SocialLinks>
-                <SocialLink href="https://github.com/tu-usuario" target="_blank" rel="noopener noreferrer">
-                  <FaGithub />
+                <SocialLink href="https://instagram.com/tu-usuario" target="_blank" rel="noopener noreferrer">
+                  <FaInstagram />
                 </SocialLink>
                 <SocialLink href="https://linkedin.com/in/tu-usuario" target="_blank" rel="noopener noreferrer">
                   <FaLinkedin />
                 </SocialLink>
-                <SocialLink href="https://twitter.com/tu-usuario" target="_blank" rel="noopener noreferrer">
-                  <FaTwitter />
+                <SocialLink href="https://discord.gg/tu-servidor" target="_blank" rel="noopener noreferrer">
+                  <FaDiscord />
                 </SocialLink>
               </SocialLinks>
             </SocialLinksContainer>
@@ -285,6 +311,59 @@ const SocialLink = styled.a`
     background: linear-gradient(to right, #7FB3D5, #F7CAC9);
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(123, 179, 213, 0.3);
+  }
+`;
+
+const EmailContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+const CopyButton = styled.button`
+  background: none;
+  border: none;
+  color: #7FB3D5;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  
+  &:hover {
+    background: rgba(123, 179, 213, 0.1);
+  }
+`;
+
+const CopyTooltip = styled.span`
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: ${props => props.visible ? 1 : 0};
+  pointer-events: ${props => props.visible ? 'auto' : 'none'};
+  transition: opacity 0.2s;
+  margin-bottom: 5px;
+  
+  &:after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
   }
 `;
 

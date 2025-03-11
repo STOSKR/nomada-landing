@@ -167,47 +167,60 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  padding: 0.9rem 1.2rem;
-  border: 1px solid #e1e1e1;
-  border-radius: 10px;
-  font-size: 1rem;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.05);
+  font-size: 16px;
+  color: #333;
   transition: all 0.3s ease;
-  background-color: #f9f9f9;
-
+  
+  &::placeholder {
+    color: #888;
+  }
+  
   &:focus {
     outline: none;
-    border-color: #7FB3D5;
-    box-shadow: 0 0 0 3px rgba(123, 179, 213, 0.1);
-    background-color: white;
+    border-color: var(--gradient-start);
+    box-shadow: 0 0 0 2px rgba(123, 179, 213, 0.3);
+    color: #333;
   }
-
+  
   &:disabled {
-    background-color: #f0f0f0;
+    opacity: 0.7;
     cursor: not-allowed;
+    color: #333;
   }
 `;
 
 const TextArea = styled.textarea`
-  padding: 0.9rem 1.2rem;
-  border: 1px solid #e1e1e1;
-  border-radius: 10px;
-  font-size: 1rem;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.05);
+  font-size: 16px;
+  color: #333;
+  min-height: 120px;
   resize: vertical;
-  min-height: 140px;
   transition: all 0.3s ease;
-  background-color: #f9f9f9;
-  font-family: inherit;
-
+  
+  &::placeholder {
+    color: #888;
+  }
+  
   &:focus {
     outline: none;
-    border-color: #7FB3D5;
-    box-shadow: 0 0 0 3px rgba(123, 179, 213, 0.1);
-    background-color: white;
+    border-color: var(--gradient-start);
+    box-shadow: 0 0 0 2px rgba(123, 179, 213, 0.3);
+    color: #333;
   }
-
+  
   &:disabled {
-    background-color: #f0f0f0;
+    opacity: 0.7;
     cursor: not-allowed;
+    color: #333;
   }
 `;
 
