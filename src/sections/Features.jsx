@@ -8,7 +8,7 @@ const featuresData = [
     id: 1,
     icon: '🌎',
     title: 'Explora el mundo',
-    description: 'Descubre miles de destinos y rutas compartidas por otros viajeros desde cualquier parte del mundo.',
+    description: 'Descubre destinos y rutas compartidas por otros viajeros desde cualquier parte del mundo.',
   },
   {
     id: 2,

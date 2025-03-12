@@ -13,20 +13,20 @@ const teamMembers = [
     email: 'shiyicheng13@gmail.com',
     linkedin: 'https://www.linkedin.com/in/shiyi-cheng-08a413251/',
     cv: '/CV_Shiyi.pdf',
-    portfolio: 'https://shiyicheng.dev',
+    portfolio: 'https://stoskr.github.io/',
     github: 'https://github.com/STOSKR'
   },
   {
     id: 2,
     name: 'Sebastian Vega',
     role: 'Fundador & Ingeniero',
-    bio: 'Desarrolladora full-stack con experiencia en crear plataformas sociales. Combina su amor por el código con su pasión por descubrir nuevas culturas.',
+    bio: 'Desarrollador Full Stack apasionado por las artes y la tecnologías.',
     avatar: '?',
-    email: 'sebastian@nomada.com',
+    email: 'sebasvt2000@gmail.com',
     linkedin: 'https://www.linkedin.com/in/sebasti%C3%A1n-vega-tafur-4782a7292/',
-    cv: '/cv-sebastian-vega.pdf',
-    portfolio: 'https://sebastianvega.dev',
-    github: 'https://github.com/sebastianvega'
+    cv: '?',
+    portfolio: '?',
+    github: 'https://github.com/Sathurno'
   }
 ];
 

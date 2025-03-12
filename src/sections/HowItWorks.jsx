@@ -4,23 +4,23 @@ import { motion, useInView } from 'framer-motion';
 
 // Datos de pasos
 const stepsData = [
+  
   {
     id: 1,
     number: '01',
-    title: 'Regístrate',
-    description: 'Crea tu cuenta de Nómada para acceder a todas las funcionalidades de la plataforma.',
-  },
-  {
-    id: 2,
-    number: '02',
     title: 'Explora',
     description: 'Descubre rutas, destinos y experiencias compartidas por otros viajeros y aventureros.',
   },
   {
-    id: 3,
-    number: '03',
+    id: 2,
+    number: '02',
     title: 'Planifica',
     description: 'Crea tu propia ruta personalizada o sigue una de las recomendadas por la comunidad.',
+  },{
+    id: 3,
+    number: '03',
+    title: 'Vive la experiencia',
+    description: 'Exporta la ruta y disfruta de la aventura.',
   },
   {
     id: 4,

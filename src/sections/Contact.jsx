@@ -66,12 +66,14 @@ const Contact = () => {
                     <CopyButton
                       onClick={handleCopyEmail}
                       as={motion.button}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      aria-label="Copiar correo electrónico"
                     >
                       <FaCopy />
+                      {copied ? "¡Copiado!" : "Copiar"}
                       <CopyTooltip visible={copied}>
-                        {copied ? "¡Copiado!" : "Copiar"}
+                        ¡Copiado al portapapeles!
                       </CopyTooltip>
                     </CopyButton>
                   </EmailContainer>
@@ -92,13 +94,13 @@ const Contact = () => {
             <SocialLinksContainer>
               <SocialLinksTitle>Síguenos</SocialLinksTitle>
               <SocialLinks>
-                <SocialLink href="https://instagram.com/tu-usuario" target="_blank" rel="noopener noreferrer">
+                <SocialLink href="https://www.instagram.com/nomada.svg/" target="_blank" rel="noopener noreferrer">
                   <FaInstagram />
                 </SocialLink>
-                <SocialLink href="https://linkedin.com/in/tu-usuario" target="_blank" rel="noopener noreferrer">
+                <SocialLink href="https://www.linkedin.com/in/nomada-app-8b324a356/" target="_blank" rel="noopener noreferrer">
                   <FaLinkedin />
                 </SocialLink>
-                <SocialLink href="https://discord.gg/tu-servidor" target="_blank" rel="noopener noreferrer">
+                <SocialLink href="https://discord.gg/43Y4kMbpvy" target="_blank" rel="noopener noreferrer">
                   <FaDiscord />
                 </SocialLink>
               </SocialLinks>
@@ -321,46 +323,57 @@ const EmailContainer = styled.div`
 `;
 
 const CopyButton = styled.button`
-  background: none;
-  border: none;
+  background: rgba(123, 179, 213, 0.1);
+  border: 1px solid rgba(123, 179, 213, 0.2);
   color: #7FB3D5;
-  font-size: 1rem;
+  font-size: 0.9rem;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: relative;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
   
   &:hover {
-    background: rgba(123, 179, 213, 0.1);
+    background: rgba(123, 179, 213, 0.2);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(123, 179, 213, 0.3);
+  }
+
+  svg {
+    font-size: 0.9rem;
   }
 `;
 
 const CopyTooltip = styled.span`
   position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: calc(100% + 5px);
+  right: 0;
   background-color: #333;
   color: white;
   font-size: 0.75rem;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 6px 10px;
+  border-radius: 6px;
   white-space: nowrap;
   opacity: ${props => props.visible ? 1 : 0};
-  pointer-events: ${props => props.visible ? 'auto' : 'none'};
-  transition: opacity 0.2s;
-  margin-bottom: 5px;
+  transform: ${props => props.visible ? 'translateY(0)' : 'translateY(5px)'};
+  pointer-events: none;
+  transition: all 0.2s ease;
   
   &:after {
     content: '';
     position: absolute;
     top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 10px;
     border-width: 5px;
     border-style: solid;
     border-color: #333 transparent transparent transparent;
