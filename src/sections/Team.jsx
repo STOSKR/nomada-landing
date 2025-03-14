@@ -13,7 +13,7 @@ const teamMembers = [
     email: 'shiyicheng13@gmail.com',
     linkedin: 'https://www.linkedin.com/in/shiyi-cheng-08a413251/',
     cv: '/CV_Shiyi.pdf',
-    portfolio: 'https://stoskr.github.io/',
+    portfolio: 'https://portfolio-shiyi.vercel.app/',
     github: 'https://github.com/STOSKR'
   },
   {
