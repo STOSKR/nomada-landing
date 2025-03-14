@@ -8,6 +8,38 @@ import { collection, addDoc, query, where, getDocs, deleteDoc, doc } from 'fireb
 import { sendWelcomeEmail } from '../services/emailjs';
 import * as localStorageService from '../services/localStorageService';
 
+// Mover las definiciones styled fuera del componente
+const ProgressBarContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 800px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+`;
+
+const ProgressBar = styled.div`
+  height: 20px;
+  background: linear-gradient(to right, #7FB3D5, #F7CAC9);
+  width: ${({ $daysRemaining }) => (100 - $daysRemaining / 30 * 100)}%;
+  transition: width 0.5s ease;
+`;
+
+const TravelerImage = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 1rem;
+`;
+
+const ProgressMessage = styled.span`
+  font-size: 1rem;
+  color: #444;
+`;
+
 const JoinNow = () => {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -217,38 +249,6 @@ const JoinNow = () => {
       }
     }
   };
-
-  // Barra de carga con imagen y mensaje
-  const ProgressBarContainer = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 2rem;
-    width: 100%;
-    max-width: 800px;
-    background: #f0f0f0;
-    border-radius: 10px;
-    overflow: hidden;
-  `;
-
-  const ProgressBar = styled.div`
-    height: 20px;
-    background: linear-gradient(to right, #7FB3D5, #F7CAC9);
-    width: ${({ daysRemaining }) => (100 - daysRemaining / 30 * 100)}%;
-    transition: width 0.5s ease;
-  `;
-
-  const TravelerImage = styled.img`
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 1rem;
-  `;
-
-  const ProgressMessage = styled.span`
-    font-size: 1rem;
-    color: #444;
-  `;
 
   return (
     <JoinSection id="join">

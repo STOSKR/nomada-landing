@@ -72,7 +72,7 @@ const Contact = () => {
                     >
                       <FaCopy />
                       {copied ? "¡Copiado!" : "Copiar"}
-                      <CopyTooltip visible={copied}>
+                      <CopyTooltip $visible={copied}>
                         ¡Copiado al portapapeles!
                       </CopyTooltip>
                     </CopyButton>
@@ -364,8 +364,8 @@ const CopyTooltip = styled.span`
   padding: 6px 10px;
   border-radius: 6px;
   white-space: nowrap;
-  opacity: ${props => props.visible ? 1 : 0};
-  transform: ${props => props.visible ? 'translateY(0)' : 'translateY(5px)'};
+  opacity: ${props => props.$visible ? 1 : 0};
+  transform: ${props => props.$visible ? 'translateY(0)' : 'translateY(5px)'};
   pointer-events: none;
   transition: all 0.2s ease;
   

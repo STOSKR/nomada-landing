@@ -93,7 +93,7 @@ const Navbar = () => {
           </JoinButton>
 
           <MenuButton onClick={() => setMenuOpen(!menuOpen)}>
-            <MenuIcon open={menuOpen}>
+            <MenuIcon $open={menuOpen}>
               <span></span>
               <span></span>
               <span></span>
@@ -265,7 +265,7 @@ const MenuIcon = styled.div`
     position: absolute;
     height: 3px;
     width: 100%;
-    background: ${props => props.open ? 'transparent' : 'var(--text)'};
+    background: ${props => props.$open ? 'transparent' : 'var(--text)'};
     border-radius: 3px;
     opacity: 1;
     left: 0;
@@ -274,19 +274,19 @@ const MenuIcon = styled.div`
     
     &:nth-child(1) {
       top: 0;
-      transform: ${props => props.open ? 'rotate(45deg) translate(6px, 6px)' : 'rotate(0)'};
-      background: ${props => props.open ? 'var(--text)' : ''};
+      transform: ${props => props.$open ? 'rotate(45deg) translate(6px, 6px)' : 'rotate(0)'};
+      background: ${props => props.$open ? 'var(--text)' : ''};
     }
     
     &:nth-child(2) {
       top: 10px;
-      opacity: ${props => props.open ? 0 : 1};
+      opacity: ${props => props.$open ? 0 : 1};
     }
     
     &:nth-child(3) {
       top: 20px;
-      transform: ${props => props.open ? 'rotate(-45deg) translate(6px, -6px)' : 'rotate(0)'};
-      background: ${props => props.open ? 'var(--text)' : ''};
+      transform: ${props => props.$open ? 'rotate(-45deg) translate(6px, -6px)' : 'rotate(0)'};
+      background: ${props => props.$open ? 'var(--text)' : ''};
     }
   }
 `;

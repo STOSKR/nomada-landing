@@ -213,13 +213,13 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.5 }}
           >
             <ImageContainer>
-              <FloatingElement top="10%" left="10%" delay={0.2}>
+              <FloatingElement $top="10%" $left="10%" $delay={0.2}>
                 <CircleDecoration size="60px" color="var(--primary)" opacity={0.2} />
               </FloatingElement>
-              <FloatingElement top="70%" left="80%" delay={0.5}>
+              <FloatingElement $top="70%" $left="80%" $delay={0.5}>
                 <CircleDecoration size="80px" color="var(--secondary)" opacity={0.2} />
               </FloatingElement>
-              <FloatingElement top="40%" left="60%" delay={0.8}>
+              <FloatingElement $top="40%" $left="60%" $delay={0.8}>
                 <CircleDecoration size="40px" color="var(--tertiary)" opacity={0.3} />
               </FloatingElement>
 
@@ -563,10 +563,10 @@ const WorldMapSVG = styled.div`
 
 const FloatingElement = styled.div`
   position: absolute;
-  top: ${props => props.top || '0'};
-  left: ${props => props.left || '0'};
+  top: ${props => props.$top || '0'};
+  left: ${props => props.$left || '0'};
   animation: float 6s ease-in-out infinite;
-  animation-delay: ${props => props.delay || 0}s;
+  animation-delay: ${props => props.$delay || 0}s;
   z-index: 2;
   
   @keyframes float {
