@@ -1,122 +1,94 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { getDatabase, ref, onValue, increment, update, serverTimestamp, get } from 'firebase/database';
 
 const VisitCounter = ({ inHero = false }) => {
-    const [totalVisits, setTotalVisits] = useState(0);
-    const [todayVisits, setTodayVisits] = useState(0);
-    const [isLoading, setIsLoading] = useState(true);
+  // Valores fijos
+  const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        // Referencia a la base de datos de Firebase
-        const db = getDatabase();
-        const totalVisitsRef = ref(db, 'statistics/visits/total');
+  useEffect(() => {
+    // Simular carga de datos
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
 
-        // Obtener la fecha actual en formato YYYY-MM-DD
-        const today = new Date().toISOString().split('T')[0];
-        const todayVisitsRef = ref(db, `statistics/visits/daily/${today}`);
+    return () => clearTimeout(timer);
+  }, []);
 
-        // Incrementar contador total
-        update(ref(db, 'statistics/visits'), {
-            'total': increment(1),
-            [`daily/${today}`]: increment(1),
-            'lastUpdated': serverTimestamp()
-        });
-
-        // Escuchar cambios en los contadores
-        const unsubscribeTotal = onValue(totalVisitsRef, (snapshot) => {
-            const data = snapshot.val() || 0;
-            setTotalVisits(data);
-            setIsLoading(false);
-        });
-
-        const unsubscribeToday = onValue(todayVisitsRef, (snapshot) => {
-            const data = snapshot.val() || 0;
-            setTodayVisits(data);
-        });
-
-        // Limpiar listeners al desmontar
-        return () => {
-            unsubscribeTotal();
-            unsubscribeToday();
-        };
-    }, []);
-
-    // Si está en la sección Hero, usar un estilo diferente integrado con el mapa
-    if (inHero) {
-        return (
-            <MapCounterContainer>
-                <MapCounterTitle>Visitante</MapCounterTitle>
-                <MapCounterContent>
-                    <MapCounterItem>
-                        <MapCounterNumber>
-                            {isLoading ? (
-                                <LoadingDots>
-                                    <span>.</span><span>.</span><span>.</span>
-                                </LoadingDots>
-                            ) : (
-                                todayVisits.toLocaleString('es-ES')
-                            )}
-                        </MapCounterNumber>
-                        <MapCounterText>Hoy</MapCounterText>
-                    </MapCounterItem>
-                    <MapCounterDivider />
-                    <MapCounterItem>
-                        <MapCounterNumber>
-                            {isLoading ? (
-                                <LoadingDots>
-                                    <span>.</span><span>.</span><span>.</span>
-                                </LoadingDots>
-                            ) : (
-                                totalVisits.toLocaleString('es-ES')
-                            )}
-                        </MapCounterNumber>
-                        <MapCounterText>Total</MapCounterText>
-                    </MapCounterItem>
-                </MapCounterContent>
-            </MapCounterContainer>
-        );
-    }
-
-    // Estilo normal para usar en otras secciones
+  // Si está en la sección Hero, usar un estilo diferente integrado con el mapa
+  if (inHero) {
     return (
-        <CounterContainer
-            as={motion.div}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-        >
-            <CounterTitle>Visitante</CounterTitle>
-            <CounterRow>
-                <CounterColumn>
-                    <CounterSubTitle>Visitas hoy</CounterSubTitle>
-                    <CounterValue>
-                        {isLoading ? (
-                            <LoadingDots>
-                                <span>.</span><span>.</span><span>.</span>
-                            </LoadingDots>
-                        ) : (
-                            <AnimatedNumber>{todayVisits.toLocaleString('es-ES')}</AnimatedNumber>
-                        )}
-                    </CounterValue>
-                </CounterColumn>
-                <CounterVerticalDivider />
-                <CounterColumn>
-                    <CounterSubTitle>Visitas totales</CounterSubTitle>
-                    <CounterValue>
-                        {isLoading ? (
-                            <LoadingDots>
-                                <span>.</span><span>.</span><span>.</span>
-                            </LoadingDots>
-                        ) : (
-                            <AnimatedNumber>{totalVisits.toLocaleString('es-ES')}</AnimatedNumber>
-                        )}
-                    </CounterValue>
-                </CounterColumn>
-            </CounterRow>
-        </CounterContainer>
+      <MapCounterContainer>
+        <MapCounterTitle>USUARIOS ACTIVOS</MapCounterTitle>
+        <MapCounterContent>
+          <MapCounterItem>
+            <MapCounterNumber>
+              {isLoading ? (
+                <LoadingDots>
+                  <span>.</span><span>.</span><span>.</span>
+                </LoadingDots>
+              ) : (
+                "11"
+              )}
+            </MapCounterNumber>
+            <MapCounterText>HOY</MapCounterText>
+          </MapCounterItem>
+          <MapCounterDivider />
+          <MapCounterItem>
+            <MapCounterNumber>
+              {isLoading ? (
+                <LoadingDots>
+                  <span>.</span><span>.</span><span>.</span>
+                </LoadingDots>
+              ) : (
+                "41"
+              )}
+            </MapCounterNumber>
+            <MapCounterText>ESTE MES</MapCounterText>
+          </MapCounterItem>
+        </MapCounterContent>
+      </MapCounterContainer>
     );
+  }
+
+  // Estilo normal para usar en otras secciones
+  return (
+    <CounterContainer
+      as={motion.div}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <CounterTitle>Usuarios Activos</CounterTitle>
+      <CounterRow>
+        <CounterColumn>
+          <CounterSubTitle>Visitas hoy</CounterSubTitle>
+          <CounterValue>
+            {isLoading ? (
+              <LoadingDots>
+                <span>.</span><span>.</span><span>.</span>
+              </LoadingDots>
+            ) : (
+              <AnimatedNumber>11</AnimatedNumber>
+            )}
+          </CounterValue>
+        </CounterColumn>
+        <CounterVerticalDivider />
+        <CounterColumn>
+          <CounterSubTitle>Visitas mensuales</CounterSubTitle>
+          <CounterValue>
+            {isLoading ? (
+              <LoadingDots>
+                <span>.</span><span>.</span><span>.</span>
+              </LoadingDots>
+            ) : (
+              <AnimatedNumber>41</AnimatedNumber>
+            )}
+          </CounterValue>
+        </CounterColumn>
+      </CounterRow>
+    </CounterContainer>
+  );
 };
 
 // Estilos para el contador en el mapa
