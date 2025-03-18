@@ -1,23 +1,25 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
+import WebFont from "webfontloader";
 
 // Archivo de estilos globales para toda la aplicación
 const GlobalStyles = createGlobalStyle`
   /* Variables de colores y tipografía */
   :root {
     /* Colores pastel con fondo más suave */
-    --background: #F8F9FA;
-    --background-secondary: #EDF2F7;
-    --primary: #7FB3D5;
-    --secondary: #F7CAC9;
-    --tertiary: #B3E0F2;
+    --background: #FFFFFFFF;
+    --background-secondary: #FFFFFFFF;
+    --primary: #2d3134;
+    --secondary: #2d3134;
+    --tertiary: #2d3134;
     --accent: #D7BDE2;
     --text: #444444;
     --text-light: #777777;
     --shadow: rgba(0, 0, 0, 0.05);
     
     /* Fuentes */
-    --font-primary: 'Poppins', sans-serif;
-    --font-secondary: 'Montserrat', sans-serif;
+    --font-primary: 'Alata', sans-serif;
+    --font-secondary: 'Inter', sans-serif;
+    --font-third: 'Sen', sans-serif;
   }
 
   * {
@@ -55,12 +57,25 @@ const GlobalStyles = createGlobalStyle`
     transition: all 0.3s ease;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1, h2, h3, h4{
     font-family: var(--font-primary);
     color: var(--text);
     line-height: 1.25;
     margin-bottom: 1rem;
     font-weight: 700;
+  }
+  h5 {
+    font-family: var(--font-third);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.25;
+    margin-bottom: 1rem;
+  }
+  h6 {
+    font-family: var(--font-secondary);
+    color: var(--text);
+    line-height: 1.25;
+    margin-bottom: 1rem;
   }
 
   p {
@@ -175,4 +190,11 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-export default GlobalStyles; 
+// Configuración de Web Font Loader
+WebFont.load({
+  google: {
+    families: ["Sen:700", "Alata", "Inter"],
+  },
+});
+
+export default GlobalStyles;

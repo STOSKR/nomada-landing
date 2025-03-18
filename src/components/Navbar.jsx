@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import LogoSVG from './LogoSVG'; // Importar el logo SVG
+import logo from './LogoSVGNomada.svg'; // Importar el logo SVG
+import { FaEnvelope, FaGithub, FaLinkedin, FaTwitter, FaMapMarkerAlt, FaPhoneAlt, FaInstagram, FaDiscord, FaCopy } from 'react-icons/fa';
 
 const Navbar = () => {
   const [scroll, setScroll] = useState(false);
@@ -72,8 +73,7 @@ const Navbar = () => {
     >
       <NavWrapper>
         <LogoContainer>
-          <LogoSVG width={40} height={40} />
-          <LogoText>Nómada</LogoText>
+          <img src={logo} alt='Icono' style={{ width: "10rem", height: "auto" }}/>
         </LogoContainer>
 
         <NavItems>
@@ -85,8 +85,6 @@ const Navbar = () => {
               </NavLink>
             </NavItem>
           ))}
-        </NavItems>
-
         <ButtonContainer>
           <JoinButton onClick={() => document.querySelector('#join').scrollIntoView({ behavior: 'smooth' })}>
             Únete
@@ -100,7 +98,24 @@ const Navbar = () => {
             </MenuIcon>
           </MenuButton>
         </ButtonContainer>
+        </NavItems>
+
+
+        <SocialLinksContainer>
+        <SocialLinks>
+          <SocialLink href="https://www.instagram.com/nomada.svg/" target="_blank" rel="noopener noreferrer">
+            <FaInstagram />
+          </SocialLink>
+          <SocialLink href="https://www.linkedin.com/in/nomada-app-8b324a356/" target="_blank" rel="noopener noreferrer">
+            <FaLinkedin />
+          </SocialLink>
+          <SocialLink href="https://discord.gg/43Y4kMbpvy" target="_blank" rel="noopener noreferrer">
+            <FaDiscord />
+          </SocialLink>
+        </SocialLinks>
+      </SocialLinksContainer>
       </NavWrapper>
+
 
       {/* Menú móvil */}
       <MobileMenu
@@ -143,6 +158,37 @@ const Navbar = () => {
     </NavContainer>
   );
 };
+const SocialLinksContainer = styled.div`
+`;
+
+const SocialLinksTitle = styled.h4`
+  font-size: 1.1rem;
+  color: #444;
+  margin-bottom: 1rem;
+  font-weight: 500;
+`;
+
+const SocialLinks = styled.div`
+  display: flex;
+  gap: 1.2rem;
+`;
+
+const SocialLink = styled.a`
+  color: #331b3b;
+  font-size: 1.7rem;
+  transition: all 0.3s ease;
+  width: 50px; /* Ajusta el ancho del óvalo */
+  height: 55px; /* Ajusta la altura del óvalo */
+  border: 2px solid #7d6d82;
+  border-radius: 70% 40% 70% 40%; /* Curvaturas de arriba a abajo (más inclinada en la parte superior derecha y inferior izquierda) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    transform: translateY(-3px) rotate(-15deg); /* Mantiene la inclinación al hacer hover */
+  }
+`;
 
 // Estilos
 const NavContainer = styled.nav`
@@ -164,8 +210,7 @@ const NavWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 0 1rem;
-  margin: 0;
+  padding: 0 5rem;
   box-sizing: border-box;
 `;
 
@@ -175,17 +220,11 @@ const LogoContainer = styled.div`
   gap: 0.5rem;
 `;
 
-const LogoText = styled.span`
-  font-size: 1.5rem;
-  font-weight: 700;
-  background: linear-gradient(to right, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-`;
 
 const NavItems = styled.ul`
   display: flex;
   list-style: none;
+  align-items: center;
   gap: 2.5rem;
   
   @media (max-width: 768px) {
@@ -197,9 +236,9 @@ const NavItem = styled.li``;
 
 const NavLink = styled.a`
   position: relative;
-  font-size: 1rem;
+  font-size: 1.3rem;
   font-weight: 500;
-  color: var(--text);
+  color: #212832;
   transition: all 0.3s ease;
   
   &:hover {
@@ -229,16 +268,19 @@ const ButtonContainer = styled.div`
 
 const JoinButton = styled.button`
   padding: 0.7rem 1.5rem;
-  background: linear-gradient(to right, var(--primary), var(--secondary));
-  color: white;
-  font-weight: 600;
-  border-radius: 30px;
+  color: #212832;
+  font-size: 1.3rem;
+  border: 1.5px solid #212832;
+  background: transparent;
+  border-radius: 10px;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px var(--shadow);
   
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px var(--shadow);
+    border: 1.5px solid #212832;
+    background-color: #FFFFFFFF;
   }
   
   @media (max-width: 768px) {

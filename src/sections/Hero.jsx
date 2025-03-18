@@ -150,8 +150,7 @@ const Hero = () => {
                 animate="visible"
                 custom={0}
               >
-                Descubre el mundo
-                <TitleGradient> sin límites</TitleGradient>
+                Descubre el mundo sin límites
               </Title>
 
               <Subtitle
@@ -213,15 +212,15 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.5 }}
           >
             <ImageContainer>
-              <FloatingElement $top="10%" $left="10%" $delay={0.2}>
-                <CircleDecoration size="60px" color="var(--primary)" opacity={0.2} />
-              </FloatingElement>
-              <FloatingElement $top="70%" $left="80%" $delay={0.5}>
-                <CircleDecoration size="80px" color="var(--secondary)" opacity={0.2} />
-              </FloatingElement>
-              <FloatingElement $top="40%" $left="60%" $delay={0.8}>
-                <CircleDecoration size="40px" color="var(--tertiary)" opacity={0.3} />
-              </FloatingElement>
+            <FloatingElement $top="10%" $left="10%" $delay={0.2}>
+              <CircleDecoration size="90px" color="#ffcf1f" opacity={0.2} /> {/* Amarillo */}
+            </FloatingElement>
+            <FloatingElement $top="70%" $left="80%" $delay={0.5}>
+              <CircleDecoration size="120px" color="#00afad" opacity={0.2} /> {/* Azul */}
+            </FloatingElement>
+            <FloatingElement $top="40%" $left="60%" $delay={0.8}>
+              <CircleDecoration size="60px" color="#d9577c" opacity={0.3} /> {/* Rojo */}
+            </FloatingElement>
 
               <WorldMapSVG>
                 <svg width="100%" height="100%" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -229,7 +228,7 @@ const Hero = () => {
                     fill="none"
                     stroke="var(--primary)"
                     strokeWidth="2"
-                    strokeDasharray="5,5" />
+                    strokeDasharray="5,5" />h
                   <circle cx="400" cy="100" r="8" fill="var(--primary)" />
                   <circle cx="600" cy="300" r="8" fill="var(--secondary)" />
                   <circle cx="500" cy="500" r="8" fill="var(--tertiary)" />
@@ -302,17 +301,16 @@ const BackgroundOverlay = styled.div`
 
 const ContentContainer = styled.div`
   width: 100%;
-  padding: 7rem 3rem 2rem;
   position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   z-index: 1;
   box-sizing: border-box;
   
-  @media (max-width: 768px) {
-    padding: 5rem 1rem 1.5rem;
+  @media (min-width: 768px) {
+    padding: 7rem 3rem 2rem;
   }
 `;
 
@@ -321,7 +319,7 @@ const HeroContent = styled.div`
   justify-content: center;
   align-items: center;
   gap: 2rem;
-  margin-top: 5vh;
+  margin-top: 7vh;
   width: 100%;
   padding-left: 15%;
   
@@ -370,7 +368,7 @@ const RightColumn = styled.div`
 `;
 
 const TextContainer = styled.div`
-  max-width: 600px;
+  max-width: 1300px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -385,11 +383,12 @@ const TextContainer = styled.div`
   }
 `;
 
-const Title = styled.h1`
-  font-size: clamp(2.5rem, 5vw, 4.2rem);
+const Title = styled.h5`
+  font-size: clamp(2.5rem, 5vw, 15rem);
   font-weight: 700;
   line-height: 1.1;
   margin-bottom: 0.5rem;
+
   color: var(--text);
   width: 100%;
   
@@ -406,9 +405,9 @@ const TitleGradient = styled.span`
 `;
 
 const Subtitle = styled.p`
-  font-size: clamp(1rem, 1.2vw, 1.1rem);
+  font-size: clamp(1rem, 1.2vw, 5rem);
   color: var(--text-light);
-  max-width: 550px;
+  max-width: 1000px;
   line-height: 1.6;
   width: 100%;
   
@@ -436,12 +435,12 @@ const ButtonGroup = styled.div`
 
 const PrimaryButton = styled.button`
   padding: 1rem 2rem;
-  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  background: #f9824e;
   color: white;
   font-weight: 600;
   border-radius: 50px;
   transition: all 0.3s ease;
-  font-size: 1rem;
+  font-size: 1.1rem;
   box-shadow: 0 4px 15px var(--shadow);
   text-align: center;
   cursor: pointer;
@@ -465,7 +464,7 @@ const SecondaryButton = styled.button`
   border: 2px solid var(--primary);
   border-radius: 50px;
   transition: all 0.3s ease;
-  font-size: 1rem;
+  font-size: 1.1rem;
   text-align: center;
   cursor: pointer;
   
@@ -531,25 +530,56 @@ const StatDivider = styled.div`
 
 const ImageContainer = styled.div`
   position: relative;
-  width: 100%;
-  height: 420px;
+  width: 90vw;  /* Ocupará el 90% del ancho de la pantalla */
+  height: 80vh; /* Ocupará el 80% de la altura de la pantalla */
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 450px;
-  margin: 0;
+  background-image: url("/public/suitcase.png");
+  background-repeat: no-repeat;
+  background-size: contain; /* Cambiar a contain para que la imagen no se recorte */
+  background-position: center;
+  overflow: visible;
+  min-width: 500px; /* Asegura que nunca sea demasiado pequeña */
+  min-height: 400px;
+  max-width: 1600px; /* Evita que sea excesivamente grande en pantallas ultra anchas */
   
-  @media (max-width: 1200px) {
-    height: 380px;
-    max-width: 400px;
+  /* Ajustes responsivos para diferentes tamaños de pantalla */
+  @media (max-width: 2560px) { /* Para pantallas 2K */
+    width: 85vw;
+    height: 75vh;
+    max-width: 1400px;
   }
-  
-  @media (max-width: 768px) {
-    height: 300px;
-    max-width: 350px;
+
+  @media (max-width: 1920px) { /* Para pantallas Full HD */
+    width: 80vw;
+    height: 70vh;
+    max-width: 1200px;
+  }
+
+  @media (max-width: 1440px) { /* Para laptops */
+    width: 75vw;
+    height: 65vh;
+    max-width: 1000px;
+  }
+
+  @media (max-width: 1024px) { /* Tablets */
+    width: 70vw;
+    height: 50vh;
+    max-width: 800px;
+  }
+
+  @media (max-width: 768px) { /* Móviles */
+    width: 60vw;
+    height: 40vh;
+    max-width: 600px;
+    min-height: 300px;
     margin: 0 auto;
   }
 `;
+
+
+
 
 const WorldMapSVG = styled.div`
   width: 100%;
@@ -587,7 +617,6 @@ const CircleDecoration = styled.div`
   height: ${props => props.size || '50px'};
   border-radius: 50%;
   background-color: ${props => props.color || 'var(--primary)'};
-  opacity: ${props => props.opacity || 0.2};
 `;
 
 const ScrollIndicator = styled.div`
@@ -595,7 +624,7 @@ const ScrollIndicator = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 2rem;
+  margin-top: auto;
 `;
 
 const ScrollText = styled.span`
