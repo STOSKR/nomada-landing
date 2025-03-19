@@ -308,10 +308,8 @@ const ContentContainer = styled.div`
   justify-content: center;
   z-index: 1;
   box-sizing: border-box;
-  
-  @media (min-width: 768px) {
-    padding: 7rem 3rem 2rem;
-  }
+  padding: 7rem 3rem 2rem;
+
 `;
 
 const HeroContent = styled.div`
