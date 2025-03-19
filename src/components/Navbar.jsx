@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import logo from './LogoSVGNomada.svg'; // Importar el logo SVG
+import logo from './logoSVGNomada.svg'; // Importar el logo SVG
 import { FaEnvelope, FaGithub, FaLinkedin, FaTwitter, FaMapMarkerAlt, FaPhoneAlt, FaInstagram, FaDiscord, FaCopy } from 'react-icons/fa';
 
 const Navbar = () => {
@@ -73,7 +73,7 @@ const Navbar = () => {
     >
       <NavWrapper>
         <LogoContainer>
-          <img src={logo} alt='Icono' style={{ width: "10rem", height: "auto" }}/>
+          <img src={logo} alt='Icono' style={{ width: "10rem", height: "auto" }} />
         </LogoContainer>
 
         <NavItems>
@@ -85,35 +85,35 @@ const Navbar = () => {
               </NavLink>
             </NavItem>
           ))}
-        <ButtonContainer>
-          <JoinButton onClick={() => document.querySelector('#join').scrollIntoView({ behavior: 'smooth' })}>
-            Únete
-          </JoinButton>
+          <ButtonContainer>
+            <JoinButton onClick={() => document.querySelector('#join').scrollIntoView({ behavior: 'smooth' })}>
+              Únete
+            </JoinButton>
 
-          <MenuButton onClick={() => setMenuOpen(!menuOpen)}>
-            <MenuIcon $open={menuOpen}>
-              <span></span>
-              <span></span>
-              <span></span>
-            </MenuIcon>
-          </MenuButton>
-        </ButtonContainer>
+            <MenuButton onClick={() => setMenuOpen(!menuOpen)}>
+              <MenuIcon $open={menuOpen}>
+                <span></span>
+                <span></span>
+                <span></span>
+              </MenuIcon>
+            </MenuButton>
+          </ButtonContainer>
         </NavItems>
 
 
         <SocialLinksContainer>
-        <SocialLinks>
-          <SocialLink href="https://www.instagram.com/nomada.svg/" target="_blank" rel="noopener noreferrer">
-            <FaInstagram />
-          </SocialLink>
-          <SocialLink href="https://www.linkedin.com/in/nomada-app-8b324a356/" target="_blank" rel="noopener noreferrer">
-            <FaLinkedin />
-          </SocialLink>
-          <SocialLink href="https://discord.gg/43Y4kMbpvy" target="_blank" rel="noopener noreferrer">
-            <FaDiscord />
-          </SocialLink>
-        </SocialLinks>
-      </SocialLinksContainer>
+          <SocialLinks>
+            <SocialLink href="https://www.instagram.com/nomada.svg/" target="_blank" rel="noopener noreferrer">
+              <FaInstagram />
+            </SocialLink>
+            <SocialLink href="https://www.linkedin.com/in/nomada-app-8b324a356/" target="_blank" rel="noopener noreferrer">
+              <FaLinkedin />
+            </SocialLink>
+            <SocialLink href="https://discord.gg/43Y4kMbpvy" target="_blank" rel="noopener noreferrer">
+              <FaDiscord />
+            </SocialLink>
+          </SocialLinks>
+        </SocialLinksContainer>
       </NavWrapper>
 
 
