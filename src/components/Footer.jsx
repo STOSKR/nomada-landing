@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import LogoSVG from './LogoSVG';
-
+import logo from './LogoSVGNomada.svg'; // Importar el logo SVG
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
@@ -10,10 +10,14 @@ const Footer = () => {
       <FooterContent>
         <FooterTop>
           <FooterLogo>
-            <LogoContainer>
-              <LogoSVG width={40} height={40} />
-              <LogoText>Nómada</LogoText>
-            </LogoContainer>
+      <LogoContainer
+        onClick={() => { 
+          document.querySelector('#home').scrollIntoView({ behavior: 'smooth' });  // Desplaza hacia la sección '#home'
+        }}
+        style={{ cursor: 'pointer' }}  // Cambia el cursor a mano
+      >
+        <img src={logo} alt='Icono' style={{ width: '9rem', height: 'auto' }} />
+      </LogoContainer>
             <LogoTagline>
               Tu comunidad global de viajeros
             </LogoTagline>
