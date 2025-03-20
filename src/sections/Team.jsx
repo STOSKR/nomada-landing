@@ -21,7 +21,7 @@ const teamMembers = [
     name: 'Sebastian Vega',
     role: 'Fundador & Ingeniero',
     bio: 'Desarrollador Full Stack apasionado por las artes y la tecnologías.',
-    avatar: '?',
+    avatar: '/avatar2.jpg',
     email: 'sebasvt2000@gmail.com',
     linkedin: 'https://www.linkedin.com/in/sebasti%C3%A1n-vega-tafur-4782a7292/',
     cv: '?',
@@ -237,11 +237,14 @@ const Team = () => {
 
 // Estilos
 const TeamSection = styled.section`
+  display: flex;
   position: relative;
+  min-height: 100vh;
   padding: 4rem 0;
   width: 100vw;
   overflow: hidden;
-  background-color: #f8f9fa;
+  justify-content: center;
+  align-items: center;
   box-sizing: border-box;
   
   @media (max-width: 768px) {
@@ -253,6 +256,10 @@ const ContentContainer = styled.div`
   width: 100%;
   padding: 0;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   z-index: 1;
   box-sizing: border-box;
 `;
@@ -271,13 +278,13 @@ const SectionTag = styled.span`
   background: rgba(123, 179, 213, 0.1);
   color: var(--primary);
   border-radius: 50px;
-  font-size: 0.85rem;
+  font-size: clamp(1rem, 1.2vw, 1.1rem);
   font-weight: 600;
   margin-bottom: 1.2rem;
 `;
 
 const SectionTitle = styled.h2`
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
   margin-bottom: 1.2rem;
   color: var(--text);
 `;
@@ -289,9 +296,9 @@ const TitleGradient = styled.span`
 `;
 
 const SectionDescription = styled.p`
-  font-size: clamp(0.9rem, 1.2vw, 1rem);
+  font-size: clamp(1rem, 1.2vw, 1.1rem);
   color: var(--text-light);
-  max-width: 600px;
+  max-width: 70%;
   margin: 0 auto;
 `;
 
@@ -299,6 +306,7 @@ const TeamContainer = styled.div`
   display: flex;
   justify-content: center;
   gap: 2rem;
+  
   flex-wrap: wrap;
   width: 100%;
   margin-top: 2rem;
@@ -315,7 +323,7 @@ const TeamMemberCard = styled.div`
   background: #FFFFFF;
   border-radius: 16px;
   padding: 2rem 1.5rem 1.5rem;
-  width: 300px;
+  width: 400px;
   box-shadow: 0 8px 20px var(--shadow);
   position: relative;
   transition: all 0.3s ease;
@@ -329,6 +337,7 @@ const TeamMemberCard = styled.div`
 const AvatarContainer = styled.div`
   position: relative;
   margin-bottom: 1.5rem;
+  
 `;
 
 const AvatarCircle = styled.div`
@@ -378,13 +387,13 @@ const MemberInfo = styled.div`
 `;
 
 const MemberName = styled.h3`
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   color: var(--text);
   margin-bottom: 0.3rem;
 `;
 
 const MemberRole = styled.h4`
-  font-size: 0.9rem;
+  font-size: 1.5rem;
   color: var(--primary);
   margin-bottom: 0.8rem;
   font-weight: 500;
@@ -392,7 +401,7 @@ const MemberRole = styled.h4`
 
 const MemberBio = styled.p`
   color: var(--text-light);
-  font-size: 0.85rem;
+  font-size: 1.1rem;
   line-height: 1.5;
 `;
 

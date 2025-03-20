@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import logo from './logoSVGNomada.svg'; // Importar el logo SVG
 import { FaEnvelope, FaGithub, FaLinkedin, FaTwitter, FaMapMarkerAlt, FaPhoneAlt, FaInstagram, FaDiscord, FaCopy } from 'react-icons/fa';
+import { Menu } from "lucide-react";
 
 const Navbar = () => {
   const [scroll, setScroll] = useState(false);
@@ -22,6 +23,7 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const closeMenu = () => setMenuOpen(false);
   // Animaciones para el menú
   const navbarVariants = {
     hidden: { opacity: 0, y: -50 },
@@ -116,7 +118,7 @@ const Navbar = () => {
         </SocialLinksContainer>
       </NavWrapper>
 
-
+      {menuOpen && <Overlay onClick={closeMenu} />}
       {/* Menú móvil */}
       <MobileMenu
         as={motion.div}
@@ -124,6 +126,10 @@ const Navbar = () => {
         initial="closed"
         animate={menuOpen ? "open" : "closed"}
       >
+        <LogoContainer>
+          <img src={logo} alt='Icono' style={{ width: "10rem", height: "auto", marginBottom: "1.5rem" }} />
+          {/* Botón circular de cerrar */}
+        </LogoContainer>
         {navLinks.map((link, index) => (
           <MobileNavItem key={index}>
             <MobileNavLink
@@ -159,6 +165,14 @@ const Navbar = () => {
   );
 };
 const SocialLinksContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  order: 0; /* Siempre entre el menú hamburguesa y los enlaces */
+  margin-left: 1rem;
+
+  @media (max-width: 1408px) {
+    display: none;
+  }
 `;
 
 const SocialLinksTitle = styled.h4`
@@ -212,6 +226,7 @@ const NavWrapper = styled.div`
   width: 100%;
   padding: 0 5rem;
   box-sizing: border-box;
+
 `;
 
 const LogoContainer = styled.div`
@@ -227,7 +242,7 @@ const NavItems = styled.ul`
   align-items: center;
   gap: 2.5rem;
   
-  @media (max-width: 768px) {
+  @media (max-width: 1400px) {
     display: none;
   }
 `;
@@ -240,7 +255,7 @@ const NavLink = styled.a`
   font-weight: 500;
   color: #212832;
   transition: all 0.3s ease;
-  
+  order: 3;
   &:hover {
     color: var(--primary);
   }
@@ -292,7 +307,7 @@ const MenuButton = styled.div`
   display: none;
   cursor: pointer;
   
-  @media (max-width: 768px) {
+  @media (max-width: 1400px) {
     display: block;
   }
 `;
@@ -338,16 +353,18 @@ const MobileMenu = styled.div`
   top: 0;
   right: 0;
   width: 70%;
+  max-width: 400px;
   height: 100vh;
   background: var(--background);
   backdrop-filter: blur(10px);
-  padding: 7rem 2rem 2rem;
+  padding: 1rem 2rem 2rem;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   z-index: 999;
   box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
-  
-  @media (min-width: 769px) {
+  order: 1; /* Primero en la fila */
+  @media (min-width: 1400px) {
     display: none;
   }
 `;
@@ -360,10 +377,7 @@ const Overlay = styled.div`
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
   z-index: 998;
-  
-  @media (min-width: 769px) {
-    display: none;
-  }
+
 `;
 
 const MobileNavItem = styled.div`
@@ -384,13 +398,14 @@ const MobileNavLink = styled.a`
 const MobileJoinButton = styled.button`
   margin-top: 1.5rem;
   padding: 0.8rem 1.8rem;
-  background: linear-gradient(to right, var(--primary), var(--secondary));
+  background: #f9824e;
   color: white;
   font-weight: 600;
-  border-radius: 30px;
+  border-radius: 50px;
   align-self: flex-start;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px var(--shadow);
+  width: 100%;
   
   &:hover {
     transform: translateY(-3px);

@@ -324,9 +324,13 @@ const JoinNow = () => {
 const JoinSection = styled.section`
   position: relative;
   padding: 6rem 0;
+    min-height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background-color: #eff5fb;
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa;
   box-sizing: border-box;
 `;
 
@@ -386,7 +390,7 @@ const SectionTitle = styled.h2`
 `;
 
 const TitleGradient = styled.span`
-  background: linear-gradient(to right, #7FB3D5, #F7CAC9);
+  background: #f9824e;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;
@@ -452,7 +456,7 @@ const SubmitButton = styled.button`
   padding: 0.8rem 1.6rem;
   border: none;
   border-radius: 50px;
-  background: linear-gradient(to right, #7FB3D5, #F7CAC9);
+  background: #f9824e;
   color: white;
   font-size: 1rem;
   font-weight: 600;

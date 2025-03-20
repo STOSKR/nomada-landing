@@ -226,9 +226,9 @@ const TextArea = styled.textarea`
 
 const SubmitButton = styled.button`
   padding: 1rem 2rem;
-  background: linear-gradient(to right, #7FB3D5, #F7CAC9);
-  color: white;
-  border: none;
+  background: transparent ;
+  color: var(--text);
+  border: 2px solid var(--primary);
   border-radius: 50px;
   font-size: 1rem;
   font-weight: 600;
@@ -238,11 +238,12 @@ const SubmitButton = styled.button`
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  box-shadow: 0 4px 15px rgba(123, 179, 213, 0.3);
+  box-shadow: 0 4px 15px rgb(229, 230, 230);
   margin-top: 0.5rem;
 
   &:hover:not(:disabled) {
-    box-shadow: 0 6px 20px rgba(123, 179, 213, 0.4);
+    box-shadow: 0 6px 20px rgb(229, 230, 230);
+    border: 2px solid var(--primary);
   }
 
   &:disabled {

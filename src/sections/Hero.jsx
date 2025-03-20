@@ -308,10 +308,8 @@ const ContentContainer = styled.div`
   justify-content: center;
   z-index: 1;
   box-sizing: border-box;
-  
-  @media (min-width: 768px) {
-    padding: 7rem 3rem 2rem;
-  }
+  padding: 7rem 3rem 2rem;
+
 `;
 
 const HeroContent = styled.div`
@@ -469,8 +467,8 @@ const SecondaryButton = styled.button`
   cursor: pointer;
   
   &:hover {
-    background: rgba(127, 179, 213, 0.1);
     transform: translateY(-3px);
+    border: 2px solid var(--primary);
   }
   
   @media (max-width: 480px) {
@@ -506,7 +504,7 @@ const StatItem = styled.div`
 `;
 
 const StatNumber = styled.span`
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-size: 1rem;
   font-weight: 700;
   background: linear-gradient(to right, var(--primary), var(--secondary));
   -webkit-background-clip: text;
@@ -514,7 +512,7 @@ const StatNumber = styled.span`
 `;
 
 const StatText = styled.span`
-  font-size: 0.9rem;
+  font-size: clamp(1rem, 1vw, 1.5rem);
   color: var(--text-light);
 `;
 
@@ -624,7 +622,8 @@ const ScrollIndicator = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  margin-top: auto;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
 `;
 
 const ScrollText = styled.span`

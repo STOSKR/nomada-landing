@@ -115,9 +115,14 @@ const Contact = () => {
 // Estilos
 const ContactSection = styled.section`
   padding: 8rem 0;
-  background-color: #eff5fb;
+  overflow: hidden;
+  background-color: #FFFFFFFF;
   width: 100vw;
   overflow: hidden;
+    display: flex;
+  justify-content: center;
+  align-items: center;
+    min-height: 100vh;
   position: relative;
 `;
 
@@ -169,7 +174,7 @@ const Title = styled.h2`
 `;
 
 const TitleGradient = styled.span`
-  background: linear-gradient(to right, #7FB3D5, #F7CAC9);
+  background: #f9824e;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;
@@ -247,11 +252,12 @@ const IconWrapper = styled.div`
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  background: linear-gradient(to right, rgba(123, 179, 213, 0.2), rgba(247, 202, 201, 0.2));
+  background: white;
+  border: 1px solid #404040FF;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #7FB3D5;
+  color: #f9824e;
   font-size: 1.2rem;
   flex-shrink: 0;
 `;
@@ -296,23 +302,22 @@ const SocialLinks = styled.div`
 `;
 
 const SocialLink = styled.a`
-  color: #7FB3D5;
+  color: #FFFFFFFF;
   font-size: 1.5rem;
   transition: all 0.3s ease;
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  background: white;
+  background: #2d3134;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 
   &:hover {
     color: white;
-    background: linear-gradient(to right, #7FB3D5, #F7CAC9);
     transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(123, 179, 213, 0.3);
+    transform: translateY(-3px) rotate(-15deg);
+    
   }
 `;
 
@@ -323,9 +328,9 @@ const EmailContainer = styled.div`
 `;
 
 const CopyButton = styled.button`
-  background: rgba(123, 179, 213, 0.1);
-  border: 1px solid rgba(123, 179, 213, 0.2);
-  color: #7FB3D5;
+  background: #FFFFFFFF;
+  border: 1px solid rgb(99, 99, 99);
+  color: #434343FF;
   font-size: 0.9rem;
   cursor: pointer;
   display: flex;
@@ -336,7 +341,7 @@ const CopyButton = styled.button`
   transition: all 0.2s ease;
   
   &:hover {
-    background: rgba(123, 179, 213, 0.2);
+    border: 1px solid rgb(99, 99, 99);
     transform: translateY(-1px);
   }
 
