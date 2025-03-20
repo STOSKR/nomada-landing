@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import logo from './LogoSVGNomada.svg'; // Importar el logo SVG
+import logo from './logoSVGNomada.svg'; // Importar el logo SVG
 import { FaEnvelope, FaGithub, FaLinkedin, FaTwitter, FaMapMarkerAlt, FaPhoneAlt, FaInstagram, FaDiscord, FaCopy } from 'react-icons/fa';
 import { Menu } from "lucide-react";
 
@@ -74,15 +74,15 @@ const Navbar = () => {
       scroll={scroll}
     >
       <NavWrapper>
-      <LogoContainer
-        onClick={() => {
-          setMenuOpen(false);  // Cierra el menú si está abierto
-          document.querySelector('#home').scrollIntoView({ behavior: 'smooth' });  // Desplaza hacia la sección '#home'
-        }}
-        style={{ cursor: 'pointer' }}  // Cambia el cursor a mano
-      >
-        <img src={logo} alt='Icono' style={{ width: '9rem', height: 'auto' }} />
-      </LogoContainer>
+        <LogoContainer
+          onClick={() => {
+            setMenuOpen(false);  // Cierra el menú si está abierto
+            document.querySelector('#home').scrollIntoView({ behavior: 'smooth' });  // Desplaza hacia la sección '#home'
+          }}
+          style={{ cursor: 'pointer' }}  // Cambia el cursor a mano
+        >
+          <img src={logo} alt='Icono' style={{ width: '9rem', height: 'auto' }} />
+        </LogoContainer>
 
 
         <NavItems>
@@ -94,38 +94,38 @@ const Navbar = () => {
               </NavLink>
             </NavItem>
           ))}
-        <ButtonContainer>
-          <JoinButton onClick={() => document.querySelector('#join').scrollIntoView({ behavior: 'smooth' })}>
-            Únete
-          </JoinButton>
+          <ButtonContainer>
+            <JoinButton onClick={() => document.querySelector('#join').scrollIntoView({ behavior: 'smooth' })}>
+              Únete
+            </JoinButton>
 
-          <MenuButton onClick={() => setMenuOpen(!menuOpen)}>
-            <MenuIcon $open={menuOpen}>
-              <span></span>
-              <span></span>
-              <span></span>
-            </MenuIcon>
-          </MenuButton>
-        </ButtonContainer>
+            <MenuButton onClick={() => setMenuOpen(!menuOpen)}>
+              <MenuIcon $open={menuOpen}>
+                <span></span>
+                <span></span>
+                <span></span>
+              </MenuIcon>
+            </MenuButton>
+          </ButtonContainer>
         </NavItems>
 
 
         <SocialLinksContainer>
-        <SocialLinks>
-          <SocialLink href="https://www.instagram.com/nomada.svg/" target="_blank" rel="noopener noreferrer">
-            <FaInstagram />
-          </SocialLink>
-          <SocialLink href="https://www.linkedin.com/in/nomada-app-8b324a356/" target="_blank" rel="noopener noreferrer">
-            <FaLinkedin />
-          </SocialLink>
-          <SocialLink href="https://discord.gg/43Y4kMbpvy" target="_blank" rel="noopener noreferrer">
-            <FaDiscord />
-          </SocialLink>
-        </SocialLinks>
-      </SocialLinksContainer>
-      <MenuButton onClick={() => setMenuOpen(!menuOpen)}>
-        <Menu size={24} />
-      </MenuButton>
+          <SocialLinks>
+            <SocialLink href="https://www.instagram.com/nomada.svg/" target="_blank" rel="noopener noreferrer">
+              <FaInstagram />
+            </SocialLink>
+            <SocialLink href="https://www.linkedin.com/in/nomada-app-8b324a356/" target="_blank" rel="noopener noreferrer">
+              <FaLinkedin />
+            </SocialLink>
+            <SocialLink href="https://discord.gg/43Y4kMbpvy" target="_blank" rel="noopener noreferrer">
+              <FaDiscord />
+            </SocialLink>
+          </SocialLinks>
+        </SocialLinksContainer>
+        <MenuButton onClick={() => setMenuOpen(!menuOpen)}>
+          <Menu size={24} />
+        </MenuButton>
       </NavWrapper>
 
       {menuOpen && <Overlay onClick={closeMenu} />}
@@ -137,7 +137,7 @@ const Navbar = () => {
         animate={menuOpen ? "open" : "closed"}
       >
         <LogoContainer>
-          <img src={logo} alt='Icono' style={{ width: "10rem", height: "auto", marginBottom:"1.5rem"}}/>
+          <img src={logo} alt='Icono' style={{ width: "10rem", height: "auto", marginBottom: "1.5rem" }} />
           {/* Botón circular de cerrar */}
         </LogoContainer>
         {navLinks.map((link, index) => (
