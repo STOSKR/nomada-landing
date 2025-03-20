@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import LogoSVG from './LogoSVG';
 import logo from './logoSVGNomada.svg'; // Importar el logo SVG
 const Footer = () => {
   const currentYear = new Date().getFullYear();
