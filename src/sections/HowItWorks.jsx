@@ -81,7 +81,7 @@ const stepsData = [
 
 const HowItWorks = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, amount: 0.2 });
+  const isInView = useInView(ref, { once: false, amount: 0.1 });
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -137,21 +137,24 @@ const HowItWorks = () => {
         </TextContainer>
         <Section ref={ref}>
             <Grid as={motion.div} variants={containerVariants} initial="hidden" animate={isInView ? "visible" : "hidden"}>
-              {stepsData.map((step, index) => (
+              {stepsData.filter(step => step.id !== 7).map((step, index) => (
                 <motion.div key={step.id} variants={itemVariants} whileHover={{ y: -5 }}>
-                  <CCard className="mb-3" style={{ margin: '10px' }}>
+                  <CCard className="mb-3" style={{ margin: '10px', paddingTop: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <CardContentWrapper isEven={index % 2 === 0}>
                       <CCardImage
                         orientation="top"
                         src={step.image}
                         style={{
-                          width: '80%',
+                          width: '90%',
                           height: 'auto',
-                          objectFit: 'cover',
+                          display: 'flex',
+                          alignSelf: 'center',
+                          maxHeight: '300px',
+                          objectFit: 'contain',
                           borderRadius: '15px',
                         }}
                       />
-                      <CCardBody style={{ padding: '20px', width: '70%', margin: '30px' }}>
+                      <CCardBody style={{ padding: '5px', width: '80%', margin: '5px', marginBottom: '20px' }}>
                         <CCardTitle style={{ fontSize: '1.3rem', textAlign: 'center' }}>{step.title}</CCardTitle>
                         <CCardText style={{ textAlign: 'center' }}>{step.description}</CCardText>
                       </CCardBody>
@@ -161,6 +164,36 @@ const HowItWorks = () => {
               ))}
             </Grid>
           </Section>
+
+          <Section2>
+          <Grid2 as={motion.div} variants={containerVariants} initial="hidden" animate={isInView ? "visible" : "hidden"}>
+            {stepsData.filter(step => step.id === 7).map((step, index) => (
+              <motion.div key={step.id} variants={itemVariants} whileHover={{ y: -5 }}>
+                <CCard className="mb-3" style={{ margin: '10px', paddingTop: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <CardContentWrapper isEven={index % 2 === 0}>
+                    <CCardImage
+                      orientation="top"
+                      src={step.image}
+                      style={{
+                        width: '90%',
+                        height: 'auto',
+                        display: 'flex',
+                        alignSelf: 'center',
+                        maxHeight: '300px',
+                        objectFit: 'contain',
+                        borderRadius: '15px',
+                      }}
+                    />
+                    <CCardBody style={{ padding: '5px', width: '80%', margin: '5px', marginBottom: '20px' }}>
+                      <CCardTitle style={{ fontSize: '1.3rem', textAlign: 'center' }}>{step.title}</CCardTitle>
+                      <CCardText style={{ textAlign: 'center' }}>{step.description}</CCardText>
+                    </CCardBody>
+                  </CardContentWrapper>
+                </CCard>
+              </motion.div>
+            ))}
+          </Grid2>
+          </Section2>
 
         <CallToAction
           as={motion.div}
@@ -187,10 +220,17 @@ const HowItWorks = () => {
 
 
 const Section = styled.section`
-  padding: 4rem 2rem;
+  padding: 2rem 2rem;
   display: flex;
-  align-self: start;
-  width: 100%;
+  align-self: center;
+  width: 80%;
+  max-width: 1600px;
+`;
+const Section2 = styled.section`
+  display: flex;
+  align-self: center;
+  width: 70%;
+  max-width: 900px;
 `;
 
 const Title = styled.h2`
@@ -205,10 +245,18 @@ const Grid = styled.div`
   gap: 2rem;
   width: 100%;
   margin: 0 auto;
+  
 
   @media (min-width: 1400px) {
     grid-template-columns: repeat(2, 1fr); /* En pantallas grandes, 2 columnas */
   }
+`;
+const Grid2 = styled.div`
+  display: grid;
+  grid-template-columns: repeat(1, 1fr); /* En pantallas pequeñas, solo 1 columna */
+  gap: 2rem;
+  width: 100%;
+  margin: 0 auto;
 `;
 
 
@@ -217,9 +265,11 @@ const CardContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: 100%;
   @media (max-width: 768px) {
     flex-direction: column;
+    
   }
 `;
 

@@ -382,7 +382,7 @@ const TextContainer = styled.div`
 `;
 
 const Title = styled.h5`
-  font-size: clamp(2.5rem, 5vw, 15rem);
+  font-size: clamp(2.5rem, 5vw, 5rem);
   font-weight: 700;
   line-height: 1.1;
   margin-bottom: 0.5rem;
@@ -403,7 +403,7 @@ const TitleGradient = styled.span`
 `;
 
 const Subtitle = styled.p`
-  font-size: clamp(1rem, 1.2vw, 5rem);
+  font-size: clamp(1rem, 1.2vw, 1.5rem);
   color: var(--text-light);
   max-width: 1000px;
   line-height: 1.6;
@@ -504,7 +504,7 @@ const StatItem = styled.div`
 `;
 
 const StatNumber = styled.span`
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 700;
   background: linear-gradient(to right, var(--primary), var(--secondary));
   -webkit-background-clip: text;
@@ -512,7 +512,7 @@ const StatNumber = styled.span`
 `;
 
 const StatText = styled.span`
-  font-size: clamp(1rem, 1vw, 1.5rem);
+  font-size: clamp(1rem, 1vw, 1.2rem);
   color: var(--text-light);
 `;
 

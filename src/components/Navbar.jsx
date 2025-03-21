@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import logo from './logoSVGNomada.svg'; // Importar el logo SVG
 import { FaEnvelope, FaGithub, FaLinkedin, FaTwitter, FaMapMarkerAlt, FaPhoneAlt, FaInstagram, FaDiscord, FaCopy } from 'react-icons/fa';
-import { Menu } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const [scroll, setScroll] = useState(false);
@@ -74,9 +74,16 @@ const Navbar = () => {
       scroll={scroll}
     >
       <NavWrapper>
-        <LogoContainer>
-          <img src={logo} alt='Icono' style={{ width: "10rem", height: "auto" }} />
+        <LogoContainer
+          onClick={() => {
+            setMenuOpen(false);  // Cierra el menú si está abierto
+            document.querySelector('#home').scrollIntoView({ behavior: 'smooth' });  // Desplaza hacia la sección '#home'
+          }}
+          style={{ cursor: 'pointer' }}  // Cambia el cursor a mano
+        >
+          <img src={logo} alt='Icono' style={{ width: '7rem', height: 'auto', marginTop: '-20px', marginLeft: '-25px'}} />
         </LogoContainer>
+
 
         <NavItems>
           {navLinks.map((link, index) => (
@@ -116,6 +123,9 @@ const Navbar = () => {
             </SocialLink>
           </SocialLinks>
         </SocialLinksContainer>
+        <MenuButton onClick={() => setMenuOpen(!menuOpen)}>
+          <Menu size={24} />
+        </MenuButton>
       </NavWrapper>
 
       {menuOpen && <Overlay onClick={closeMenu} />}
@@ -127,8 +137,7 @@ const Navbar = () => {
         animate={menuOpen ? "open" : "closed"}
       >
         <LogoContainer>
-          <img src={logo} alt='Icono' style={{ width: "10rem", height: "auto", marginBottom: "1.5rem" }} />
-          {/* Botón circular de cerrar */}
+          <img src={logo} alt='Icono' style={{ width: "8rem", height: "auto", marginBottom: "1.5rem" }} />
         </LogoContainer>
         {navLinks.map((link, index) => (
           <MobileNavItem key={index}>
@@ -190,6 +199,7 @@ const SocialLinks = styled.div`
 const SocialLink = styled.a`
   color: #331b3b;
   font-size: 1.7rem;
+  margin-top: -15px;
   transition: all 0.3s ease;
   width: 50px; /* Ajusta el ancho del óvalo */
   height: 55px; /* Ajusta la altura del óvalo */
@@ -216,7 +226,8 @@ const NavContainer = styled.nav`
   transition: all 0.3s ease;
   z-index: 1000;
   box-shadow: ${props => props.scroll ? '0 2px 10px rgba(0,0,0,0.05)' : 'none'};
-  box-sizing: border-box;
+
+
 `;
 
 const NavWrapper = styled.div`
@@ -226,13 +237,19 @@ const NavWrapper = styled.div`
   width: 100%;
   padding: 0 5rem;
   box-sizing: border-box;
+    box-sizing: border-box;
+    @media (max-width: 1408px) {
+    margin-top: 15px;
+  }
 
 `;
 
 const LogoContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  
+  align-items: center;
+  justify-content: center;
 `;
 
 
@@ -241,6 +258,7 @@ const NavItems = styled.ul`
   list-style: none;
   align-items: center;
   gap: 2.5rem;
+  justify-content: center;
   
   @media (max-width: 1400px) {
     display: none;
@@ -306,6 +324,7 @@ const JoinButton = styled.button`
 const MenuButton = styled.div`
   display: none;
   cursor: pointer;
+  margin-top: -20px;
   
   @media (max-width: 1400px) {
     display: block;
@@ -360,6 +379,7 @@ const MobileMenu = styled.div`
   padding: 1rem 2rem 2rem;
   display: flex;
   flex-direction: column;
+
   justify-content: flex-start;
   z-index: 999;
   box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
@@ -399,9 +419,11 @@ const MobileJoinButton = styled.button`
   margin-top: 1.5rem;
   padding: 0.8rem 1.8rem;
   background: #f9824e;
+  font-size: 1.2rem;
   color: white;
   font-weight: 600;
   border-radius: 50px;
+  
   align-self: flex-start;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px var(--shadow);
