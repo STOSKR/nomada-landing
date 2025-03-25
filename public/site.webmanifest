@@ -1,13 +1,19 @@
 {
   "name": "Nómada",
   "short_name": "Nómada",
-  "description": "Red social para viajeros",
+  "description": "Red social para viajero",
   "icons": [
     {
       "src": "/Logo-nomada.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/Logo-nomada-26.png",
+      "sizes": "26x26",
+      "type": "image/png",
+      "purpose": "any"
     }
   ],
   "theme_color": "#f9824e",
@@ -16,4 +22,4 @@
   "start_url": "/",
   "scope": "/",
   "orientation": "portrait"
-} 
+}

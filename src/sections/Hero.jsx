@@ -160,7 +160,7 @@ const Hero = () => {
                 animate="visible"
                 custom={1}
               >
-                La red social para viajeros que te permite conectar con otros aventureros,
+                La Red social para viajero que te permite conectar con otros aventureros,
                 descubrir rutas únicas y compartir experiencias inolvidables.
               </Subtitle>
 
@@ -212,15 +212,15 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.5 }}
           >
             <ImageContainer>
-            <FloatingElement $top="10%" $left="10%" $delay={0.2}>
-              <CircleDecoration size="90px" color="#ffcf1f" opacity={0.2} /> {/* Amarillo */}
-            </FloatingElement>
-            <FloatingElement $top="70%" $left="80%" $delay={0.5}>
-              <CircleDecoration size="120px" color="#00afad" opacity={0.2} /> {/* Azul */}
-            </FloatingElement>
-            <FloatingElement $top="40%" $left="60%" $delay={0.8}>
-              <CircleDecoration size="60px" color="#d9577c" opacity={0.3} /> {/* Rojo */}
-            </FloatingElement>
+              <FloatingElement $top="10%" $left="10%" $delay={0.2}>
+                <CircleDecoration size="90px" color="#ffcf1f" opacity={0.2} /> {/* Amarillo */}
+              </FloatingElement>
+              <FloatingElement $top="70%" $left="80%" $delay={0.5}>
+                <CircleDecoration size="120px" color="#00afad" opacity={0.2} /> {/* Azul */}
+              </FloatingElement>
+              <FloatingElement $top="40%" $left="60%" $delay={0.8}>
+                <CircleDecoration size="60px" color="#d9577c" opacity={0.3} /> {/* Rojo */}
+              </FloatingElement>
 
               <WorldMapSVG>
                 <svg width="100%" height="100%" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
