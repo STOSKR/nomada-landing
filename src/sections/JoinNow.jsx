@@ -45,7 +45,7 @@ const JoinNow = () => {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [useLocalStorage, setUseLocalStorage] = useState(!db);
+  const [useLocalStorage, _setUseLocalStorage] = useState(!db);
   const [emailSent, setEmailSent] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [subscribersCount, setSubscribersCount] = useState(0);
@@ -69,20 +69,6 @@ const JoinNow = () => {
 
     getSubscribersCount();
   }, []);
-
-  // Función para mostrar el panel de administración
-  const toggleAdmin = () => {
-    setShowAdmin(!showAdmin);
-  };
-
-  // Función para alternar entre Firestore y localStorage
-  const toggleStorage = () => {
-    // Solo permitir alternar a Firestore si db está disponible
-    if (!db && !useLocalStorage) {
-      return;
-    }
-    setUseLocalStorage(!useLocalStorage);
-  };
 
   // Validación de email
   const validateEmail = (email) => {

@@ -153,16 +153,6 @@ const Hero = () => {
                 Descubre el mundo sin límites
               </Title>
 
-              <Subtitle
-                as={motion.p}
-                variants={textVariants}
-                initial="hidden"
-                animate="visible"
-                custom={1}
-              >
-                La Red social para viajero que te permite conectar con otros aventureros,
-                descubrir rutas únicas y compartir experiencias inolvidables.
-              </Subtitle>
 
               <ButtonGroup
                 as={motion.div}
@@ -188,18 +178,18 @@ const Hero = () => {
               custom={3}
             >
               <StatItem>
-                <StatNumber>Comunidad</StatNumber>
-                <StatText>En crecimiento</StatText>
+                <StatNumber>Descubre</StatNumber>
+                <StatText>experiencias</StatText>
               </StatItem>
               <StatDivider />
               <StatItem>
-                <StatNumber>Viajeros</StatNumber>
-                <StatText>Ayudándonos</StatText>
+                <StatNumber>Vive</StatNumber>
+                <StatText>el viaje</StatText>
               </StatItem>
               <StatDivider />
               <StatItem>
-                <StatNumber>Experiencias</StatNumber>
-                <StatText>Compartidas</StatText>
+                <StatNumber>Comparte</StatNumber>
+                <StatText>con los demás</StatText>
               </StatItem>
             </StatsContainer>
 

@@ -7,7 +7,6 @@ import comunidadImage from '../assets/images/Comunidad.png';
 import colaboracionImage from '../assets/images/Colaboraciones.png';
 import crearImage from '../assets/images/Creara.png';
 import personal1Image from '../assets/images/personal1.png';
-import personal2Image from '../assets/images/personal2.png';
 import Descubrira from '../assets/images/Descubrira.png';
 import Recomendaciones from '../assets/images/Recomendaciones.png';
 import perfil from '../assets/images/perfil.png';

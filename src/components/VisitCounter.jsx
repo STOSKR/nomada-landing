@@ -1,19 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
 const VisitCounter = ({ inHero = false }) => {
-  // Valores fijos
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Simular carga de datos
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
+  // Usando valores fijos sin simulación de carga
+  const [weeklyVisits] = useState(30);
+  const [monthlyVisits] = useState(76);
 
   // Si está en la sección Hero, usar un estilo diferente integrado con el mapa
   if (inHero) {
@@ -22,29 +14,13 @@ const VisitCounter = ({ inHero = false }) => {
         <MapCounterTitle>USUARIOS ACTIVOS</MapCounterTitle>
         <MapCounterContent>
           <MapCounterItem>
-            <MapCounterNumber>
-              {isLoading ? (
-                <LoadingDots>
-                  <span>.</span><span>.</span><span>.</span>
-                </LoadingDots>
-              ) : (
-                "11"
-              )}
-            </MapCounterNumber>
-            <MapCounterText>HOY</MapCounterText>
+            <MapCounterNumber>{weeklyVisits}</MapCounterNumber>
+            <MapCounterText>ÚLTIMOS 7<br />DÍAS</MapCounterText>
           </MapCounterItem>
           <MapCounterDivider />
           <MapCounterItem>
-            <MapCounterNumber>
-              {isLoading ? (
-                <LoadingDots>
-                  <span>.</span><span>.</span><span>.</span>
-                </LoadingDots>
-              ) : (
-                "41"
-              )}
-            </MapCounterNumber>
-            <MapCounterText>ESTE MES</MapCounterText>
+            <MapCounterNumber>{monthlyVisits}</MapCounterNumber>
+            <MapCounterText>ESTE<br />MES</MapCounterText>
           </MapCounterItem>
         </MapCounterContent>
       </MapCounterContainer>
@@ -62,28 +38,16 @@ const VisitCounter = ({ inHero = false }) => {
       <CounterTitle>Usuarios Activos</CounterTitle>
       <CounterRow>
         <CounterColumn>
-          <CounterSubTitle>Visitas hoy</CounterSubTitle>
+          <CounterSubTitle>Últimos 7 días</CounterSubTitle>
           <CounterValue>
-            {isLoading ? (
-              <LoadingDots>
-                <span>.</span><span>.</span><span>.</span>
-              </LoadingDots>
-            ) : (
-              <AnimatedNumber>11</AnimatedNumber>
-            )}
+            <AnimatedNumber>{weeklyVisits}</AnimatedNumber>
           </CounterValue>
         </CounterColumn>
         <CounterVerticalDivider />
         <CounterColumn>
-          <CounterSubTitle>Visitas mensuales</CounterSubTitle>
+          <CounterSubTitle>Últimos 30 días</CounterSubTitle>
           <CounterValue>
-            {isLoading ? (
-              <LoadingDots>
-                <span>.</span><span>.</span><span>.</span>
-              </LoadingDots>
-            ) : (
-              <AnimatedNumber>41</AnimatedNumber>
-            )}
+            <AnimatedNumber>{monthlyVisits}</AnimatedNumber>
           </CounterValue>
         </CounterColumn>
       </CounterRow>
