@@ -1,11 +1,9 @@
-import { useState } from 'react';
-import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import styled from 'styled-components';
+import useVisitCounter from '../hooks/useVisitCounter';
 
 const VisitCounter = ({ inHero = false }) => {
-  // Usando valores fijos sin simulación de carga
-  const [weeklyVisits] = useState(30);
-  const [monthlyVisits] = useState(76);
+  const { weeklyVisits, monthlyVisits, loading } = useVisitCounter();
 
   // Si está en la sección Hero, usar un estilo diferente integrado con el mapa
   if (inHero) {
@@ -14,12 +12,16 @@ const VisitCounter = ({ inHero = false }) => {
         <MapCounterTitle>USUARIOS ACTIVOS</MapCounterTitle>
         <MapCounterContent>
           <MapCounterItem>
-            <MapCounterNumber>{weeklyVisits}</MapCounterNumber>
+            <MapCounterNumber>
+              {loading ? <LoadingDots><span>.</span><span>.</span><span>.</span></LoadingDots> : weeklyVisits}
+            </MapCounterNumber>
             <MapCounterText>ÚLTIMOS 7<br />DÍAS</MapCounterText>
           </MapCounterItem>
           <MapCounterDivider />
           <MapCounterItem>
-            <MapCounterNumber>{monthlyVisits}</MapCounterNumber>
+            <MapCounterNumber>
+              {loading ? <LoadingDots><span>.</span><span>.</span><span>.</span></LoadingDots> : monthlyVisits}
+            </MapCounterNumber>
             <MapCounterText>ESTE<br />MES</MapCounterText>
           </MapCounterItem>
         </MapCounterContent>
@@ -40,14 +42,22 @@ const VisitCounter = ({ inHero = false }) => {
         <CounterColumn>
           <CounterSubTitle>Últimos 7 días</CounterSubTitle>
           <CounterValue>
-            <AnimatedNumber>{weeklyVisits}</AnimatedNumber>
+            {loading ? (
+              <LoadingDots><span>.</span><span>.</span><span>.</span></LoadingDots>
+            ) : (
+              <AnimatedNumber>{weeklyVisits}</AnimatedNumber>
+            )}
           </CounterValue>
         </CounterColumn>
         <CounterVerticalDivider />
         <CounterColumn>
           <CounterSubTitle>Últimos 30 días</CounterSubTitle>
           <CounterValue>
-            <AnimatedNumber>{monthlyVisits}</AnimatedNumber>
+            {loading ? (
+              <LoadingDots><span>.</span><span>.</span><span>.</span></LoadingDots>
+            ) : (
+              <AnimatedNumber>{monthlyVisits}</AnimatedNumber>
+            )}
           </CounterValue>
         </CounterColumn>
       </CounterRow>

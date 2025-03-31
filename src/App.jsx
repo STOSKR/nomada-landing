@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import styled from 'styled-components';
 import GlobalStyles from './styles/GlobalStyles';
 import { Analytics } from '@vercel/analytics/react';
+import { trackPageView } from './services/firebaseAnalyticsService';
 
 // Componentes
 import Navbar from './components/Navbar';
@@ -16,13 +17,16 @@ import JoinNow from './sections/JoinNow';
 import Contact from './sections/Contact';
 
 function App() {
-  // Efecto para precargar las fuentes de Google
+  // Efecto para precargar las fuentes de Google y registrar evento de analíticas
   useEffect(() => {
     // Cargar fuentes de Google
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap';
     document.head.appendChild(link);
+    
+    // Registrar visita en Firebase Analytics (solo evento, no contador)
+    trackPageView('home');
 
     // Limpiar al desmontar
     return () => {
