@@ -533,7 +533,7 @@ const ImageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("/public/suitcase.png");
+  background-image: url("/suitcase.png");
   background-repeat: no-repeat;
   background-size: contain; /* Cambiar a contain para que la imagen no se recorte */
   background-position: center;

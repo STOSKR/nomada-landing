@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { motion, useInView } from 'framer-motion';
 import { gsap } from 'gsap';
 import { db } from '../firebase/config';
-import { collection, addDoc, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 // Solo importar el servicio de emailjs
 import { sendWelcomeEmail } from '../services/emailjs';
 import * as localStorageService from '../services/localStorageService';
@@ -153,7 +153,7 @@ const JoinNow = () => {
         // Intentar guardar en Firestore primero
         try {
           // Añadir nuevo suscriptor a Firestore
-          const docRef = await addDoc(collection(db, "subscribers"), {
+          const _docRef = await addDoc(collection(db, "subscribers"), {
             email: email,
             createdAt: new Date(),
             status: "active"
