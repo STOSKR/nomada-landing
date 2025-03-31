@@ -4,10 +4,10 @@ import { motion, useInView } from 'framer-motion';
 
 // Datos de características
 const featuresData = [
-  { id: 1, icon: '🌎', title: 'Explora el mundo', description: 'Descubre destinos y rutas compartidas por otros viajeros desde cualquier parte del mundo.' },
-  { id: 2, icon: '🧭', title: 'Planifica tu ruta', description: 'Crea y personaliza rutas de viaje a tu medida, con recomendaciones y consejos de la comunidad.' },
-  { id: 3, icon: '👥', title: 'Conecta con viajeros', description: 'Forma parte de una comunidad global de nómadas y conoce personas con tus mismos intereses.' },
-  { id: 4, icon: '📸', title: 'Comparte experiencias', description: 'Sube tus fotos, vídeos y aventuras para inspirar a otros y mantener un diario de tus viajes.' }
+  { id: 1, icon: '/features/descubre.png', title: 'Descubrir', description: 'Explora destinos y rutas compartidas por otros viajeros.' },
+  { id: 2, icon: '/features/planifica.png', title: 'Planificar', description: 'Crea rutas personalizadas con consejos de la comunidad.' },
+  { id: 3, icon: '/features/vive.png', title: 'Vivir', description: 'Vive la experiencia de la planificación realizada.' },
+  { id: 4, icon: '/features/comparte.png', title: 'Compartir', description: 'Sube tus fotos y aventuras para inspirar a otros.' }
 ];
 
 const Features = () => {
@@ -36,7 +36,7 @@ const Features = () => {
           <SectionTag>Características</SectionTag>
           <SectionTitle>Toda la aventura <TitleGradient>en tus manos</TitleGradient></SectionTitle>
           <SectionDescription>
-            Nómada te ofrece todas las herramientas que necesitas para vivir experiencias únicas y conectar con otros aventureros alrededor del mundo.
+            Nómada quiere ofrecer una plataforma all-in-one para:
           </SectionDescription>
         </TextContainer>
 
@@ -52,7 +52,9 @@ const Features = () => {
                 transition: { duration: 0.3 }
               }}
             >
-              <FeatureIcon>{feature.icon}</FeatureIcon>
+              <FeatureIcon>
+                <FeatureImage src={feature.icon} alt={feature.title} />
+              </FeatureIcon>
               <FeatureTitle>{feature.title}</FeatureTitle>
               <FeatureDescription>{feature.description}</FeatureDescription>
             </FeatureCard>
@@ -179,7 +181,6 @@ const FeatureCard = styled.div`
 `;
 
 const FeatureIcon = styled.div`
-  font-size: 3rem;
   margin-bottom: 1.5rem;
   height: 70px;
   width: 70px;
@@ -188,6 +189,12 @@ const FeatureIcon = styled.div`
   justify-content: center;
   border-radius: 20px;
   background: rgba(35, 217, 151, 0.1);
+`;
+
+const FeatureImage = styled.img`
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
 `;
 
 const FeatureTitle = styled.h3`

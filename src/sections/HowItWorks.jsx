@@ -16,64 +16,64 @@ const stepsData = [
   {
     id: 1,
     number: '01',
-    title: '¡Directo al grano!',
-    description: 'Con Nómada, la aventura comienza de inmediato. Solo ingresa tu destino y obtén la información esencial para arrancar, todo antes de crear tu itinerario. ¡Tu viaje empieza aquí y ahora!',
+    title: 'Inicio rápido',
+    description: 'Ingresa tu destino y obtén información esencial al instante, antes de crear tu itinerario.',
     image: inicioImage,
   },
   {
     id: 2,
     number: '02',
-    title: 'Descubre el mundo',
-    description: 'Explora destinos fascinantes y obtén información clave sobre cada uno. Deja que Nómada te guíe a los rincones más sorprendentes, basados en tus gustos y preferencias. ¡Tu próxima aventura te está esperando!',
+    title: 'Explora destinos',
+    description: 'Descubre lugares fascinantes basados en tus gustos y preferencias personales.',
     image: Descubrira,
   },
   {
     id: 3,
     number: '03',
-    title: 'Recomendaciones personalizadas',
-    description: 'Nómada tiene la intuición para recomendarte los destinos más populares que coinciden con tus intereses. Explora lugares que te encantarán y que ni sabías que existían. ¡Tu lista de destinos deseados acaba de crecer!',
+    title: 'Recomendaciones',
+    description: 'Encuentra los destinos más populares que coinciden con tus intereses y descubre lugares únicos.',
     image: Recomendaciones,
   },
   {
     id: 5,
     number: '05',
-    title: 'Reserva con Nómada',
-    description: 'Estamos trabajando para ofrecerte las mejores ofertas, asociándonos con empresas y particulares de todo el mundo. Con Nómada, tu próximo viaje será aún más accesible y personalizado. ¡Reserva y empieza a vivir la experiencia de tus sueños!',
+    title: 'Reserva fácil',
+    description: 'Accede a las mejores ofertas con nuestros socios para hacer tu viaje más accesible y personalizado.',
     image: colaboracionImage,
   },
   {
     id: 6,
     number: '06',
-    title: 'Crea',
-    description: ' Nómada te ayudará a descubrir los puntos de interés más fascinantes cerca de ti, haciendo que cada paso de tu aventura sea aún más memorable. ¡Tu próxima gran experiencia está a solo un itinerario de distancia!',
+    title: 'Crea itinerarios',
+    description: 'Descubre puntos de interés cercanos para hacer cada paso de tu aventura más memorable.',
     image: crearImage,
   },
   {
     id: 8,
     number: '08',
-    title: 'Conecta con tus redes',
-    description: 'Conecta tu perfil de Nómada a Instagram y Facebook para crear enlaces directos. Deja que tus amigos vean tus viajes, fotos y lugares favoritos de una forma única y accesible.',
+    title: 'Conecta redes',
+    description: 'Integra tus perfiles de Instagram y Facebook para compartir tus viajes de forma única.',
     image: personal1Image,
   },
   {
     id: 9,
     number: '09',
-    title: 'Aumenta la experiencia',
-    description: 'Nómada enriquece tus recuerdos creando y buscando contenido sobre tus fotos y lugares visitados. Con reseñas, recomendaciones y datos curiosos, ¡inspira a otros mientras tú también descubres más de cada destino!',
+    title: 'Enriquece recuerdos',
+    description: 'Complementa tus fotos con reseñas, recomendaciones y datos curiosos de cada destino.',
     image: enriquece,
   },
   {
     id: 4,
     number: '04',
-    title: 'Comparte y conéctate',
-    description: 'Inspira a otros viajeros compartiendo tus experiencias, fotos y consejos. Además, aprovecha las recomendaciones de la comunidad para crear nuevos planes. ¡Haz de cada viaje una historia que otros también quieran vivir!',
+    title: 'Comparte',
+    description: 'Inspira a otros viajeros con tus experiencias y aprovecha las recomendaciones de la comunidad.',
     image: comunidadImage,
   },
   {
     id: 7,
     number: '07',
-    title: 'Tu perfil, tu historia',
-    description: 'En tu perfil podrás ver todos tus viajes pasados y futuros en una cronología, decidir qué compartir o mantener privado, y gestionar a tu grupo de co-travelers. ¡Todo lo que necesitas para organizar y recordar tus aventuras!',
+    title: 'Tu historia',
+    description: 'Visualiza tus viajes en una cronología, controla tu privacidad y gestiona tu grupo de viajeros.',
     image: perfil,
   },
 ];
@@ -130,8 +130,7 @@ const HowItWorks = () => {
         >
           <SectionTitle>Comienza tu <TitleGradient>aventura</TitleGradient></SectionTitle>
           <SectionDescription>
-            Descubre cómo Nómada transforma la forma de viajar y conectar con otros aventureros
-            en 4 sencillos pasos.
+            Descubre cómo Nómada transforma la forma de viajar en unos sencillos pasos.
           </SectionDescription>
         </TextContainer>
         <Section ref={ref}>

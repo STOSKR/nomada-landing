@@ -249,11 +249,6 @@ const JoinNow = () => {
           <JoinTextContainer>
             <SectionTag>Únete a Nómada</SectionTag>
             <SectionTitle>Sé parte de nuestra <TitleGradient>comunidad</TitleGradient></SectionTitle>
-            <SectionDescription>
-              Regístrate ahora para formar parte de nuestra lista de early adopters.
-              Serás de los primeros en probar Nómada cuando esté disponible y recibirás
-              noticias y actualizaciones exclusivas.
-            </SectionDescription>
           </JoinTextContainer>
 
           {!submitted ? (
@@ -272,8 +267,7 @@ const JoinNow = () => {
               </InputGroup>
               {error && <ErrorMessage>{error}</ErrorMessage>}
               <PrivacyText>
-                Al unirte, aceptas nuestra política de privacidad y términos de servicio.
-                No compartiremos tu información con terceros.
+                Le notificaremos cuando esté disponible la primera versión.
               </PrivacyText>
             </Form>
           ) : renderSuccessMessage()}
