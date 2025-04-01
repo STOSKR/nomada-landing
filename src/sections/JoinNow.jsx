@@ -286,7 +286,7 @@ const JoinNow = () => {
           </StatItem>
           <StatDivider />
           <StatItem>
-            <StatValue>6 de abril</StatValue>
+            <StatValue>11 de abril</StatValue>
             <StatLabel>Fecha de lanzamiento</StatLabel>
           </StatItem>
           <StatDivider />
