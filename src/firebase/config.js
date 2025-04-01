@@ -17,7 +17,8 @@ const firebaseConfig = {
     messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
     appId: import.meta.env.VITE_FIREBASE_APP_ID,
     measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
-    databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL || `https://${import.meta.env.VITE_FIREBASE_PROJECT_ID}-default-rtdb.firebaseio.com`
+    databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL ||
+        `https://${import.meta.env.VITE_FIREBASE_PROJECT_ID}-default-rtdb.europe-west1.firebasedatabase.app`
 };
 
 // Initialize Firebase
@@ -58,8 +59,9 @@ try {
 
 try {
     database = app.name !== 'placeholder-app' ? getDatabase(app) : null;
+    console.log('Firebase Realtime Database inicializada con URL:', firebaseConfig.databaseURL);
 } catch (error) {
-    // Error silencioso
+    console.error('Error al inicializar Firebase Realtime Database:', error);
 }
 
 // Exportar los servicios

@@ -14,6 +14,7 @@ export const trackEvent = (eventName, eventParams = {}) => {
       return false;
     }
 
+    console.log(`Registrando evento en Analytics: ${eventName}`, eventParams);
     logEvent(analytics, eventName, eventParams);
     return true;
   } catch (error) {
@@ -28,7 +29,12 @@ export const trackEvent = (eventName, eventParams = {}) => {
  * @returns {boolean} - true si se registró correctamente, false en caso contrario
  */
 export const trackPageView = (pageName) => {
-  return trackEvent('page_view', { page_title: pageName });
+  console.log(`Registrando vista de página: ${pageName}`);
+  return trackEvent('page_view', {
+    page_title: pageName,
+    page_location: window.location.href,
+    page_path: window.location.pathname
+  });
 };
 
 /**
@@ -43,6 +49,7 @@ export const setAnalyticsUserId = (userId) => {
       return false;
     }
 
+    console.log(`Estableciendo ID de usuario en Analytics: ${userId}`);
     setUserId(analytics, userId);
     return true;
   } catch (error) {
@@ -63,6 +70,7 @@ export const setAnalyticsUserProperties = (properties) => {
       return false;
     }
 
+    console.log('Estableciendo propiedades de usuario en Analytics:', properties);
     setUserProperties(analytics, properties);
     return true;
   } catch (error) {

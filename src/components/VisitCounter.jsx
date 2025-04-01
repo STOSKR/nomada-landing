@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import useVisitCounter from '../hooks/useVisitCounter';
 
 const VisitCounter = ({ inHero = false }) => {
-  const { weeklyVisits, monthlyVisits, loading } = useVisitCounter();
+  const { weeklyVisits, monthlyVisits, loading, dataSource } = useVisitCounter();
 
   // Si está en la sección Hero, usar un estilo diferente integrado con el mapa
   if (inHero) {
@@ -25,6 +25,13 @@ const VisitCounter = ({ inHero = false }) => {
             <MapCounterText>ESTE<br />MES</MapCounterText>
           </MapCounterItem>
         </MapCounterContent>
+        {import.meta.env.DEV && (
+          <DataSourceIndicator source={dataSource}>
+            {dataSource === 'firebase' ? 'Datos de Firebase' :
+              dataSource === 'fallback' ? 'Valores predeterminados' :
+                dataSource === 'error' ? 'Error al cargar datos' : 'Cargando...'}
+          </DataSourceIndicator>
+        )}
       </MapCounterContainer>
     );
   }
@@ -61,6 +68,13 @@ const VisitCounter = ({ inHero = false }) => {
           </CounterValue>
         </CounterColumn>
       </CounterRow>
+      {import.meta.env.DEV && (
+        <DataSourceIndicator source={dataSource}>
+          {dataSource === 'firebase' ? 'Datos de Firebase' :
+            dataSource === 'fallback' ? 'Valores predeterminados' :
+              dataSource === 'error' ? 'Error al cargar datos' : 'Cargando...'}
+        </DataSourceIndicator>
+      )}
     </CounterContainer>
   );
 };
@@ -235,6 +249,23 @@ const LoadingDots = styled.div`
     40% { opacity: 0.2; transform: translateY(0); }
     100% { opacity: 0.2; transform: translateY(0); }
   }
+`;
+
+// Nuevo componente para indicar la fuente de datos (solo en desarrollo)
+const DataSourceIndicator = styled.div`
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  text-align: center;
+  background-color: ${({ source }) =>
+    source === 'firebase' ? 'rgba(0, 128, 0, 0.1)' :
+      source === 'fallback' ? 'rgba(255, 165, 0, 0.1)' :
+        source === 'error' ? 'rgba(255, 0, 0, 0.1)' : 'rgba(0, 0, 0, 0.1)'};
+  color: ${({ source }) =>
+    source === 'firebase' ? 'green' :
+      source === 'fallback' ? 'orange' :
+        source === 'error' ? 'red' : 'gray'};
 `;
 
 export default VisitCounter; 
